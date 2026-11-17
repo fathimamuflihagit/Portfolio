@@ -502,6 +502,549 @@
       ]
     },
     {
+      "id": "rocky-mountain-bikes-power-bi",
+      "title": "Rocky Mountain Bikes: Sales and Profit Analysis in Power BI",
+      "tagline": "A 4-page Power BI report on $110M of bike sales across three fiscal years. Sales more than doubled, but resellers earn almost no profit: online sales bring in 92% of it.",
+      "role_tags": [
+        "BI",
+        "Data",
+        "Business Analyst"
+      ],
+      "tools": [
+        "Power BI"
+      ],
+      "course_code": "",
+      "context": "Power BI course project, Sheridan College (October 2026)",
+      "status": "Completed",
+      "dataset": {
+        "name": "Rocky Mountain Bikes sales data (course case-study dataset)",
+        "url": "",
+        "note": "Five files in five formats: customers (CSV), products and resellers (Excel), territories (JSON) and sales orders (Access database). 121,253 order lines from July 2023 to June 2026; the fiscal year runs July to June."
+      },
+      "cover_image": "assets/img/projects/rocky-mountain-bikes-power-bi.webp",
+      "cover_alt": "Three rising fiscal-year columns split into reseller and online sales, with a monthly sales line above",
+      "hide_cover": true,
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "request": {
+        "label": "Request the Power BI report",
+        "intro": "The .pbix report (4 pages), the data model and the DAX measures are available on request.",
+        "message": "Hi Fathima, I'd like to see your Rocky Mountain Bikes Power BI report. Could you send the file or walk me through it?"
+      },
+      "business_problem": "Rocky Mountain Bikes (RMB) sells bikes, components, clothing and accessories online and through about 635 resellers. Management wanted to understand three years of sales (July 2023 to June 2026): what is growing, where the profit really comes from, and what may happen next year. The data was spread across five files in five different formats.",
+      "highlights": [
+        {
+          "value": "$110.3M",
+          "label": "Sales analysed",
+          "note": "121,253 order lines, FY2024 to FY2026"
+        },
+        {
+          "value": "2.2×",
+          "label": "Sales growth in two years",
+          "note": "$24.1M in FY2024 to $52.1M in FY2026"
+        },
+        {
+          "value": "92%",
+          "label": "Of profit comes from online",
+          "note": "From only 27% of sales"
+        },
+        {
+          "value": "329",
+          "label": "Resellers losing money",
+          "note": "52% of the 635 resellers"
+        }
+      ],
+      "story": {
+        "title": "How I built it",
+        "blocks": [
+          {
+            "type": "flow",
+            "title": "From five files to one report",
+            "intro": "Select a step to see what was done there, or press play.",
+            "region": {
+              "from": 1,
+              "to": 4,
+              "label": "Inside Power BI Desktop",
+              "icon": "layers"
+            },
+            "steps": [
+              {
+                "n": 1,
+                "icon": "file",
+                "name": "Get data",
+                "service": "5 files, 5 formats",
+                "text": "Connected to all five sources: Customers (CSV), Products and Resellers (Excel), Territories (JSON) and the sales orders (Access database, two tables)."
+              },
+              {
+                "n": 2,
+                "icon": "gear",
+                "name": "Clean",
+                "service": "Power Query",
+                "text": "Removed duplicate products and territories, dropped the Corporate HQ territory, trimmed text, labelled missing values (for example \"N/A - Reseller Sale\" instead of [Not Applicable]), merged the order header into the order lines, and added Sales Amount, Total Cost and Days to Ship columns."
+              },
+              {
+                "n": 3,
+                "icon": "model",
+                "name": "Model",
+                "service": "Star schema",
+                "text": "One Sales fact table (121,253 rows) linked to Customers, Products, Resellers, Territories and a fiscal-year Dates table (July to June). Order date is the active date link; ship date is an inactive one, used only when needed."
+              },
+              {
+                "n": 4,
+                "icon": "formula",
+                "name": "Measure",
+                "service": "18 DAX measures",
+                "text": "Total Sales, Gross Profit, Profit Margin %, Order Count, Average Order Value, Customer Count, Sales YoY Growth %, Sales Fiscal YTD, Average Discount % and Sales by Ship Date (USERELATIONSHIP), kept together in one measures table."
+              },
+              {
+                "n": 5,
+                "icon": "chart",
+                "name": "Report",
+                "service": "4 report pages",
+                "text": "Executive Overview, Profit by Product and Channel, Customers and Geography, and Trends and Forecast. Every page has fiscal-year and channel slicers and a one-line takeaway at the bottom."
+              }
+            ]
+          }
+        ]
+      },
+      "visuals_title": "Results and visuals",
+      "visuals_intro": "Hover over any chart to see the numbers, or switch to the table view. All values are recalculated from the report's data model.",
+      "charts": [
+        {
+          "type": "bar",
+          "title": "Sales by fiscal year and channel",
+          "labels": [
+            "FY2024",
+            "FY2025",
+            "FY2026"
+          ],
+          "category_title": "Fiscal year",
+          "prefix": "$",
+          "unit": "M",
+          "series": [
+            {
+              "name": "Reseller",
+              "values": [
+                16.47,
+                28.01,
+                36.5
+              ]
+            },
+            {
+              "name": "Internet",
+              "values": [
+                7.59,
+                6.15,
+                15.62
+              ]
+            }
+          ],
+          "caption": "Sales grew 42% in FY2025 and 53% in FY2026. Online sales dipped in FY2025, then more than doubled in FY2026."
+        },
+        {
+          "type": "bar",
+          "title": "Share of sales vs share of profit",
+          "labels": [
+            "Internet",
+            "Reseller"
+          ],
+          "category_title": "Channel",
+          "unit": "%",
+          "decimals": 0,
+          "series": [
+            {
+              "name": "Share of sales",
+              "values": [
+                26.6,
+                73.4
+              ]
+            },
+            {
+              "name": "Share of gross profit",
+              "values": [
+                92.4,
+                7.6
+              ]
+            }
+          ],
+          "caption": "Resellers bring in almost three quarters of sales but less than 8% of the profit. Online sales earn a 41% margin; reseller sales earn 1.2%."
+        },
+        {
+          "type": "line",
+          "title": "Monthly sales, July 2023 to June 2026",
+          "labels": [
+            "Jul 2023",
+            "Aug 2023",
+            "Sep 2023",
+            "Oct 2023",
+            "Nov 2023",
+            "Dec 2023",
+            "Jan 2024",
+            "Feb 2024",
+            "Mar 2024",
+            "Apr 2024",
+            "May 2024",
+            "Jun 2024",
+            "Jul 2024",
+            "Aug 2024",
+            "Sep 2024",
+            "Oct 2024",
+            "Nov 2024",
+            "Dec 2024",
+            "Jan 2025",
+            "Feb 2025",
+            "Mar 2025",
+            "Apr 2025",
+            "May 2025",
+            "Jun 2025",
+            "Jul 2025",
+            "Aug 2025",
+            "Sep 2025",
+            "Oct 2025",
+            "Nov 2025",
+            "Dec 2025",
+            "Jan 2026",
+            "Feb 2026",
+            "Mar 2026",
+            "Apr 2026",
+            "May 2026",
+            "Jun 2026"
+          ],
+          "category_title": "Month",
+          "prefix": "$",
+          "unit": "M",
+          "decimals": 2,
+          "series": [
+            {
+              "name": "Total sales",
+              "values": [
+                1.42,
+                2.06,
+                2.52,
+                0.56,
+                4.77,
+                0.6,
+                1.33,
+                3.95,
+                0.72,
+                1.55,
+                2.9,
+                1.68,
+                3.02,
+                3.96,
+                3.3,
+                2.12,
+                3.56,
+                2.66,
+                1.83,
+                2.84,
+                2.18,
+                2.42,
+                3.5,
+                2.76,
+                3.62,
+                5.3,
+                5.2,
+                3.64,
+                5.02,
+                4.95,
+                3.21,
+                3.98,
+                4.43,
+                4.01,
+                5.28,
+                3.48
+              ]
+            }
+          ],
+          "caption": "A clear upward trend with a strong seasonal pattern: November, May, August and September are the busiest months; January and October are the slowest."
+        },
+        {
+          "type": "bar",
+          "horizontal": true,
+          "size": "tall",
+          "title": "Sales by region (all three years)",
+          "labels": [
+            "US Southwest",
+            "Canada",
+            "US Northwest",
+            "Australia",
+            "US Central",
+            "US Southeast",
+            "United Kingdom",
+            "France",
+            "US Northeast",
+            "Germany"
+          ],
+          "highlight": 0,
+          "category_title": "Region",
+          "prefix": "$",
+          "unit": "M",
+          "series": [
+            {
+              "name": "Total sales",
+              "values": [
+                24.32,
+                16.44,
+                16.17,
+                10.68,
+                7.94,
+                7.92,
+                7.7,
+                7.29,
+                6.96,
+                4.91
+              ]
+            }
+          ],
+          "caption": "North America brings in about 72% of sales. The US Southwest is the largest region; Germany is the smallest."
+        }
+      ],
+      "comparison": {
+        "title": "Online vs reseller sales (FY2024 to FY2026)",
+        "columns": [
+          "Internet",
+          "Reseller"
+        ],
+        "rows": [
+          {
+            "label": "Sales",
+            "values": [
+              "$29.4M",
+              "$81.0M"
+            ],
+            "bars": [
+              29.4,
+              81.0
+            ]
+          },
+          {
+            "label": "Gross profit",
+            "values": [
+              "$12.1M",
+              "$1.0M"
+            ],
+            "bars": [
+              12.1,
+              1.0
+            ]
+          },
+          {
+            "label": "Profit margin",
+            "values": [
+              "41.1%",
+              "1.2%"
+            ],
+            "bars": [
+              41.1,
+              1.2
+            ]
+          },
+          {
+            "label": "Average discount off list price",
+            "values": [
+              "0%",
+              "41%"
+            ],
+            "bars": [
+              0,
+              41
+            ]
+          }
+        ],
+        "note": "Online customers pay list price. Resellers get about 41% off on average, which wipes out the margin: bikes sold through resellers lose money overall (-0.7% margin)."
+      },
+      "tabs_title": "The report, page by page",
+      "subprojects": [
+        {
+          "title": "1. Overview",
+          "tool": "Page 1",
+          "description": "The one-page summary for management.",
+          "steps": [
+            "KPI cards: Total Sales, Gross Profit, Profit Margin % and Order Count",
+            "Sales by fiscal year and channel (column chart) and share of sales by channel (pie)",
+            "Gross profit and margin by fiscal year (combo chart) and sales by product category (bar)"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "title": "Gross profit and margin by fiscal year",
+            "labels": [
+              "FY2024",
+              "FY2025",
+              "FY2026"
+            ],
+            "category_title": "Fiscal year",
+            "prefix": "$",
+            "unit": "M",
+            "series": [
+              {
+                "name": "Gross profit",
+                "values": [
+                  3.19,
+                  3.76,
+                  6.13
+                ]
+              }
+            ]
+          },
+          "key_insight": "Sales more than doubled in two years, but the profit margin fell from 13.2% in FY2024 to 11.8% in FY2026. Resellers and bikes drive most of the sales."
+        },
+        {
+          "title": "2. Profit",
+          "tool": "Page 2",
+          "description": "Where RMB makes money and where it loses it.",
+          "steps": [
+            "KPI cards: Units Sold, Average Discount % and Gross Profit",
+            "Sales by category with drill-down to subcategory",
+            "Profit margin by category, Internet vs Reseller",
+            "Gross profit by subcategory, with losses in red, and a reseller scatter of sales vs margin"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "title": "Profit margin by category and channel",
+            "labels": [
+              "Bikes",
+              "Clothing",
+              "Accessories"
+            ],
+            "category_title": "Category",
+            "unit": "%",
+            "series": [
+              {
+                "name": "Internet",
+                "values": [
+                  40.6,
+                  40.1,
+                  62.6
+                ]
+              },
+              {
+                "name": "Reseller",
+                "values": [
+                  -0.7,
+                  14.1,
+                  35.0
+                ]
+              }
+            ]
+          },
+          "key_insight": "Bikes sell well, but reseller discounts are so large that RMB loses money on bikes sold through resellers. Jerseys, touring frames and caps lose money overall. (Components are sold only through resellers, at an 8.8% margin.)"
+        },
+        {
+          "title": "3. Customers",
+          "tool": "Page 3",
+          "description": "Where sales come from, and who is buying online.",
+          "steps": [
+            "KPI cards: Customer Count and Average Order Value",
+            "Sales by territory and channel (bar chart)",
+            "Decomposition tree: break sales down by group, country, region, channel and category",
+            "Top 10 online customers (table) and online customers per fiscal year (column chart)"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "title": "Online customers per fiscal year",
+            "labels": [
+              "FY2024",
+              "FY2025",
+              "FY2026"
+            ],
+            "category_title": "Fiscal year",
+            "decimals": 0,
+            "series": [
+              {
+                "name": "Online customers",
+                "values": [
+                  2468,
+                  3394,
+                  17587
+                ]
+              }
+            ]
+          },
+          "key_insight": "North America brings in about 72% of sales. Online customers grew about five-fold in FY2026, from 3,394 to 17,587."
+        },
+        {
+          "title": "4. Trends and forecast",
+          "tool": "Page 4",
+          "description": "What is changing over time, and what FY2027 may look like.",
+          "steps": [
+            "KPI cards: Sales Fiscal YTD and Average Days to Ship (7 days)",
+            "Monthly sales with a 12-month Power BI forecast for FY2027",
+            "Monthly sales pattern compared year over year",
+            "Orders vs average order value (combo chart) and year-over-year sales growth"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "title": "Orders up, average order value down",
+            "labels": [
+              "FY2024",
+              "FY2025",
+              "FY2026"
+            ],
+            "category_title": "Fiscal year",
+            "prefix": "$",
+            "decimals": 0,
+            "series": [
+              {
+                "name": "Average order value",
+                "values": [
+                  7496,
+                  7153,
+                  2221
+                ]
+              }
+            ]
+          },
+          "key_insight": "Orders jumped from 4,776 to 23,469 in FY2026 while the average order value fell from about $7,150 to $2,220: many more, smaller online orders. If the trend continues, FY2027 sales will grow again."
+        }
+      ],
+      "insights": [
+        "Sales grew from $24.1M (FY2024) to $52.1M (FY2026), up 42% and then 53%, but the profit margin slipped from 13.2% to 11.8%.",
+        "Resellers bring in 73% of sales but only about 8% of gross profit (1.2% margin), because they buy at about 41% below list price.",
+        "Online sales are 27% of sales but 92% of gross profit, at a 41% margin.",
+        "Bikes are 86% of sales. Through resellers, bikes lose money overall (-0.7% margin), and 329 of 635 resellers (52%) are unprofitable.",
+        "Online customers grew about five-fold in FY2026 (3,394 to 17,587), bringing many smaller orders: average order value fell from about $7,150 to $2,220.",
+        "North America is 72% of sales; the US Southwest alone is $24.3M. Sales peak in November, May, August and September."
+      ],
+      "recommendations": [
+        "Review reseller pricing: cap discounts, especially on bikes, so reseller sales are at least break-even.",
+        "Grow the online channel, which earns a 41% margin, for example with marketing in the busiest months.",
+        "Review the 329 unprofitable resellers and renegotiate terms with the largest ones first.",
+        "Fix or drop loss-making lines: jerseys, touring frames and caps.",
+        "Plan stock and staff around the peak months (November, May, August, September)."
+      ],
+      "improvements": [
+        "Add a profit-and-margin forecast, not only a sales forecast.",
+        "Add drill-through pages for a single reseller or product, with targets and variance.",
+        "Publish to the Power BI Service with row-level security, so each regional manager sees only their own territory."
+      ],
+      "approach": [
+        "Get data: connected to five sources in five formats (CSV, Excel, JSON and an Access database).",
+        "Clean: Power Query steps to remove duplicates, trim text, label missing values, merge the order tables and add calculated columns.",
+        "Model: a star schema with one Sales fact table, four dimension tables and a fiscal-year Dates table.",
+        "Measure: 18 DAX measures, including time intelligence (year-over-year growth, fiscal year-to-date).",
+        "Report: four themed pages with slicers, drill-down, a decomposition tree, a forecast and a takeaway line on every page."
+      ],
+      "section_order": [
+        "problem",
+        "story",
+        "visuals",
+        "insights",
+        "recommendations",
+        "approach",
+        "tools",
+        "dataset",
+        "next",
+        "links"
+      ],
+      "hide_sections": []
+    },
+    {
       "id": "corner-cup-store-performance",
       "title": "Coffee Chain Store Performance Analysis",
       "tagline": "Why do some of a coffee chain's 12 shops earn four times more than others? Descriptive statistics, correlation, regression and probability, across Excel, Python and R.",
@@ -1070,7 +1613,7 @@
         "note": "A widely used sample retail dataset: about 10,000 order lines from a fictional US superstore, with sales, profit, discount, category, segment and region."
       },
       "cover_image": "assets/img/projects/retail-sales-dashboard.webp",
-      "featured": true,
+      "featured": false,
       "github_url": "",
       "live_dashboard_url": "",
       "business_problem": "A regional sales manager needs to see which regions, product categories and customer segments drive sales and profit, how this year compares with last year, and where discounting is eating into margin.",
@@ -1163,7 +1706,7 @@
         "note": "An IBM sample dataset describing about 7,000 customers of a fictional telecom company: services, contract and billing details, and whether each customer churned."
       },
       "cover_image": "assets/img/projects/customer-churn-analysis.webp",
-      "featured": true,
+      "featured": false,
       "github_url": "",
       "live_dashboard_url": "",
       "business_problem": "A telecom provider is losing subscribers. The retention team wants to know which customer and contract characteristics are linked to churn, so they can focus their offers where they matter.",

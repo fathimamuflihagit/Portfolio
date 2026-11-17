@@ -26,6 +26,9 @@ const MODE_KEY = 'story-mode';
 
 // Simple line icons on a 24 x 24 grid (generic shapes, not product logos).
 const GLYPHS = {
+  layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5"/>',
+  model: '<circle cx="12" cy="12" r="3"/><circle cx="4" cy="5" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><path d="M5.6 6.2l4 3.6M18.4 6.2l-4 3.6M5.6 17.8l4-3.6M18.4 17.8l-4-3.6"/>',
+  formula: '<path d="M14 4h-2.5a2 2 0 0 0-2 1.7L7.5 19a2 2 0 0 1-2 1.7H4M6 10h7M15 12l5 6M20 12l-5 6"/>',
   store: '<path d="M4 10v10h16V10M3 10l2-6h14l2 6M3 10h18M9 20v-6h6v6"/>',
   file: '<path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"/>',
   upload: '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',
@@ -181,7 +184,7 @@ function flowBlock(block) {
 
   // Steps outside the region (people) sit before / after the dashed region frame.
   const before = el('div', { class: 'flow__group' });
-  const regionBox = el('div', { class: 'flow__group flow__region' }, el('span', { class: 'flow__region-label' }, glyph('maple', 'story-icon story-icon--sm'), region.label || 'Region'));
+  const regionBox = el('div', { class: 'flow__group flow__region' }, el('span', { class: 'flow__region-label' }, glyph(region.icon || 'maple', 'story-icon story-icon--sm'), region.label || 'Region'));
   const after = el('div', { class: 'flow__group' });
   const regionTrack = el('div', { class: 'flow__track' });
   regionBox.append(regionTrack);
@@ -209,6 +212,14 @@ function flowBlock(block) {
   panel.id = 'flow-panel';
 
   const lane = el('div', { class: 'flow__lane' }, before.childElementCount ? before : null, regionBox, after.childElementCount ? after : null);
+  // Wide layout: one column per group, sized by how many steps it holds.
+  const sizes = [before.childElementCount, regionTrack.childElementCount, after.childElementCount];
+  const cols = [];
+  if (sizes[0]) cols.push(`minmax(0, ${sizes[0]}fr)`);
+  cols.push(`minmax(0, ${(sizes[1] * 1.12).toFixed(2)}fr)`);
+  if (sizes[2]) cols.push(`minmax(0, ${sizes[2]}fr)`);
+  lane.style.setProperty('--lane-cols', cols.join(' '));
+  regionTrack.style.setProperty('--n', String(sizes[1]));
 
   const guard = block.guard
     ? el(
@@ -283,7 +294,7 @@ function flowBlock(block) {
   wrap.append(
     el('div', { class: 'flow__head' }, el('div', null, el('h3', { class: 'story-title', text: block.title || 'How it works' }), say(block.intro, 'p', 'story-lead')), playButton),
     lane,
-    guard,
+    guard || '',
     panel
   );
   show(0);

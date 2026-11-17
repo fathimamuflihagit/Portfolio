@@ -62,7 +62,7 @@
 
   "_stats_help": "Each stat is counted from your data, so it stays honest. Sources you can use: projects_active (In progress + Completed), projects_completed, projects_total, tools, datasets, courses_current, courses_completed, certifications_earned. To type a number yourself, replace \"source\" with \"value\": 5.",
   "stats": [
-    { "label": "Projects underway", "source": "projects_active" },
+    { "label": "Projects completed or in progress", "source": "projects_active" },
     { "label": "Tools in my toolkit", "source": "tools" },
     { "label": "Public datasets", "source": "datasets" },
     { "label": "Courses this semester", "source": "courses_current" }

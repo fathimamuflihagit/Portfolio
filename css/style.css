@@ -4687,7 +4687,7 @@ a.tag:hover {
 /* Wide: the journey runs left to right */
 @container (min-width: 46rem) {
   .flow__lane {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 5.6fr) minmax(0, 1fr);
+    grid-template-columns: var(--lane-cols, minmax(0, 1fr) minmax(0, 5.6fr) minmax(0, 1fr));
     align-items: stretch;
   }
 
@@ -4697,7 +4697,7 @@ a.tag:hover {
   }
 
   .flow__track {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr));
   }
 
   .flow__step {

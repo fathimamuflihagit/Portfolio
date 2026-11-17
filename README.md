@@ -498,7 +498,7 @@ Text is normally one string. Optionally, any text can have two versions, `{ "pla
 | Block `type` | What it shows | Main fields |
 |---|---|---|
 | `chapter` | A numbered chapter | `number`, `kicker`, `title`, `text`, optional `stats` (value + label), `chips` (icon + text), `visual` (`{"kind": "files"}`: stores sending files into one place) |
-| `flow` | An animated, clickable step-by-step journey with a play button | `title`, `intro`, `steps` (`n`, `icon`, `name`, `service`, `text`), `region` (`from`, `to`, `label`: the steps inside the dashed frame), `guard` (a security bar under the steps) |
+| `flow` | An animated, clickable step-by-step journey with a play button | `title`, `intro`, `steps` (`n`, `icon`, `name`, `service`, `text`), `region` (`from`, `to`, `label`, optional `icon`: the steps inside the dashed frame), `guard` (a security bar under the steps) |
 | `decisions` | "Chose X over Y" cards | `items` (`chose`, `over`, `title`, `why`, optional `number` + `number_label`) |
 | `budget` | A cost gauge against a budget, a cost breakdown and an optional comparison | `currency`, `spend`, `limit`, `verdict`, `parts` (`name`, `value`), `parts_note`, `compare` |
 | `matrix` | A who-can-access-what table | `columns`, `rows` (`who`, `note`, `cells`: `true`, `false` or a short word such as `"Read"`) |
@@ -506,6 +506,6 @@ Text is normally one string. Optionally, any text can have two versions, `{ "pla
 | `checklist` | Requirements, each ticked with how it was met | `items` (`need`, `how`) |
 | `evidence` | Original images that open full size | `items` (`image`, `alt`, `caption`, `wide`) |
 
-Icons available for `icon` fields: store, file, upload, bucket, gear, catalog, search, chart, people, shield, key, log, lock, maple, dollar, clock, check.
+Icons available for `icon` fields (including `region.icon` on a flow): store, file, upload, bucket, gear, catalog, search, chart, people, shield, key, log, lock, maple, dollar, clock, check, layers, model, formula.
 
 Only put numbers in a story that come from your own work, and label estimates as estimates.
