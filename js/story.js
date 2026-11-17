@@ -558,6 +558,9 @@ export function renderStory(story) {
     say(story.switch_hint, 'span', 'story-switch__hint')
   );
 
-  root.append(switcher, ...blocks.map((block, i) => RENDERERS[block.type](block, i)));
+  // The switch only appears when the story actually has two versions of some text.
+  const twoLevels = JSON.stringify(story.blocks || []).includes('"plain"');
+  if (twoLevels) root.append(switcher);
+  root.append(...blocks.map((block, i) => RENDERERS[block.type](block, i)).filter(Boolean));
   return root;
 }

@@ -241,7 +241,7 @@ The new project appears in the grid, the filters and the counters automatically.
 | `section_order` | Optional. The order of the case-study sections, for example results first for a finished project |
 | `hide_cover` | Optional. `true` keeps the cover image on cards but hides it on the case-study page |
 | `hide_sections` | Optional. Section ids to leave out of the case-study page, for example `["dataset", "approach"]` |
-| `story` | Optional. A told-as-a-story walkthrough shown first on the case-study page, with an "In plain words / Under the hood" switch. See "Story blocks" below |
+| `story` | Optional. A told-as-a-story walkthrough shown first on the case-study page, told in numbered chapters with animated visuals. See "Story blocks" below |
 
 ### Subprojects (the tabs)
 
@@ -493,7 +493,7 @@ project-name/
 
 A project can tell its case study as a story (see `retailco-aws-analytics-architecture` in `data/projects.json`). Add `"story": { "title": "...", "blocks": [ ... ] }` and put `"story"` in `section_order`. The blocks are drawn by `js/story.js`.
 
-Any text in a block can be one string, or two versions: `{ "plain": "for anyone", "tech": "for technical readers" }`. Visitors pick which one they read with the switch at the top of the story, and the choice is remembered.
+Text is normally one string. Optionally, any text can have two versions, `{ "plain": "for anyone", "tech": "for technical readers" }`; the "In plain words / Under the hood" switch then appears at the top of the story. With one string everywhere, there is no switch.
 
 | Block `type` | What it shows | Main fields |
 |---|---|---|
