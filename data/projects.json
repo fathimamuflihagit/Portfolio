@@ -1,0 +1,720 @@
+{
+  "_readme": "One entry per project. To add a project, copy an existing entry, give it a new unique id, and edit the text. No HTML changes are needed. Any text that starts with 'TODO:' shows as 'coming soon' on the site until you replace it. status must be Completed, In progress or Planned. Tool names must match the names in data/site.json (skills). See the README for the full field guide.",
+
+  "projects": [
+    {
+      "id": "retail-sales-dashboard",
+      "title": "Retail Sales Performance Dashboard",
+      "tagline": "From raw order lines to a regional KPI dashboard a sales manager could open on Monday morning.",
+      "role_tags": ["BI"],
+      "tools": ["MySQL", "Excel", "Power BI"],
+      "course_code": "INFO51486",
+      "status": "In progress",
+      "dataset": {
+        "name": "Superstore Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/vivek468/superstore-dataset-final",
+        "note": "A widely used sample retail dataset: about 10,000 order lines from a fictional US superstore, with sales, profit, discount, category, segment and region."
+      },
+      "cover_image": "assets/img/projects/retail-sales-dashboard.webp",
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "A regional sales manager needs to see which regions, product categories and customer segments drive sales and profit, how this year compares with last year, and where discounting is eating into margin.",
+      "approach": [
+        "Load the raw CSV into MySQL, profile it, and write cleaning queries for duplicates, data types and date formats.",
+        "Summarize sales and profit by region, category and segment with Excel pivot tables to sanity-check the SQL output.",
+        "Model the data in Power BI and build KPI cards, a year-over-year trend and a drill-down from region to state.",
+        "Write a one-page summary of findings and recommendations for a non-technical reader."
+      ],
+      "subprojects": [
+        {
+          "title": "SQL cleaning",
+          "tool": "MySQL",
+          "description": "Cleaning and validation queries: duplicate checks, type fixes, date parsing, and a tidy view ready for analysis.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on what the cleaning step revealed, such as duplicates or odd values you found."
+        },
+        {
+          "title": "Pivot analysis",
+          "tool": "Excel",
+          "description": "Pivot tables and charts that break sales and profit down by region, category and segment, used to cross-check the SQL results.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the most useful pattern the pivot tables showed."
+        },
+        {
+          "title": "Dashboard",
+          "tool": "Power BI",
+          "description": "KPI cards for sales, profit and margin, a year-over-year trend, and a region drill-down with slicers for category and segment.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on what a manager would notice first on the dashboard."
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Sales by region",
+        "labels": ["West", "East", "Central", "South"],
+        "series": [{ "name": "Sales (index)", "values": [80, 70, 55, 40] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it.",
+        "TODO: insight 3, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1. What should the business do, based on insight 1?",
+        "TODO: recommendation 2."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "customer-churn-analysis",
+      "title": "Customer Churn Analysis",
+      "tagline": "Which customers leave, and what do they have in common?",
+      "role_tags": ["Data", "AI"],
+      "tools": ["Python", "R", "Tableau"],
+      "course_code": "MATH54937",
+      "status": "In progress",
+      "dataset": {
+        "name": "Telco Customer Churn (Kaggle, IBM sample data)",
+        "url": "https://www.kaggle.com/datasets/blastchar/telco-customer-churn",
+        "note": "An IBM sample dataset describing about 7,000 customers of a fictional telecom company: services, contract and billing details, and whether each customer churned."
+      },
+      "cover_image": "assets/img/projects/customer-churn-analysis.webp",
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "A telecom provider is losing subscribers. The retention team wants to know which customer and contract characteristics are linked to churn, so they can focus their offers where they matter.",
+      "approach": [
+        "Explore the data in Python with pandas and matplotlib: distributions, missing values, and churn rate by segment.",
+        "Fit a logistic regression in R and interpret the coefficients as odds ratios.",
+        "Check the model with a train/test split and a confusion matrix.",
+        "Tell the story in Tableau: who churns, the main drivers, and where to act first."
+      ],
+      "subprojects": [
+        {
+          "title": "Python EDA",
+          "tool": "Python",
+          "description": "An exploratory notebook covering data quality, distributions, and churn rate across contract type, tenure and services.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the strongest pattern you saw during exploration."
+        },
+        {
+          "title": "Logistic regression",
+          "tool": "R",
+          "description": "A logistic regression model of churn, with odds ratios, a train/test split and a confusion matrix to check how well it performs.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on which variables mattered most in the model, and how well it performed."
+        },
+        {
+          "title": "Churn story",
+          "tool": "Tableau",
+          "description": "A Tableau story that walks from the overall churn rate to the main drivers and the customer groups most at risk.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the main message of the story."
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Churn rate by contract type",
+        "unit": "%",
+        "labels": ["Month-to-month", "One year", "Two year"],
+        "series": [{ "name": "Churn rate", "values": [30, 20, 10] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it.",
+        "TODO: insight 3, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1. What should the retention team do first?",
+        "TODO: recommendation 2."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "marketing-campaign-roi",
+      "title": "Marketing Campaign ROI",
+      "tagline": "Did the ad campaign work, and was the difference real or just noise?",
+      "role_tags": ["Marketing"],
+      "tools": ["Python", "Excel", "Tableau"],
+      "course_code": "MATH54937",
+      "status": "Planned",
+      "dataset": {
+        "name": "Marketing A/B Testing (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/faviovaz/marketing-ab-testing",
+        "note": "User-level results of an experiment where one group saw ads and a control group saw a public service announcement, with a conversion flag and ad exposure by day and hour."
+      },
+      "cover_image": "assets/img/projects/marketing-campaign-roi.webp",
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "A marketing team ran an ad campaign with a control group. They need to know whether the ads raised conversions, how confident they can be in that result, and when ads were most effective.",
+      "approach": [
+        "Check the experiment setup: group sizes, balance, and any data quality issues.",
+        "Compare conversion rates between the ad group and the control group with a t-test and a confidence interval.",
+        "Build a funnel and exposure dashboard: conversion by number of ads seen, day of week and hour.",
+        "Write a short recommendations memo for the marketing lead."
+      ],
+      "subprojects": [
+        {
+          "title": "A/B test",
+          "tool": "Python",
+          "description": "Hypothesis test on conversion rate for the ad group against the control group, with a t-test, a confidence interval and a plain-language reading of the result.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence stating the lift, the confidence interval, and whether the result is statistically significant."
+        },
+        {
+          "title": "Funnel dashboard",
+          "tool": "Tableau",
+          "description": "A dashboard of conversion by ad exposure, day of week and hour. This dataset has no channel or spend columns, so channel attribution will be added with a second dataset that includes them.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on when or where the campaign performed best."
+        },
+        {
+          "title": "Recommendations memo",
+          "tool": "Excel",
+          "description": "A one-page memo with supporting tables: what the test showed, what it means for budget, and what to test next.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence with the headline recommendation."
+        }
+      ],
+      "chart": {
+        "type": "line",
+        "title": "Conversion rate by day of week",
+        "unit": "%",
+        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "series": [
+          { "name": "Ad group", "values": [3.0, 3.2, 2.9, 2.7, 2.8, 2.6, 3.1] },
+          { "name": "Control group", "values": [2.0, 2.1, 1.9, 1.8, 1.9, 1.7, 2.0] }
+        ],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1. Should the campaign continue, and where should budget go?",
+        "TODO: recommendation 2."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "stock-portfolio-tracker",
+      "title": "Stock Portfolio Tracker",
+      "tagline": "A small portfolio model that shows return, risk and what-if scenarios in one view.",
+      "role_tags": ["Finance"],
+      "tools": ["Excel", "Python", "Power BI"],
+      "course_code": "INFO57747",
+      "status": "Planned",
+      "dataset": {
+        "name": "S&P 500 Stock Data (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/camnugent/sandp500",
+        "note": "Five years of daily open, high, low, close and volume data for companies in the S&P 500 index."
+      },
+      "cover_image": "assets/img/projects/stock-portfolio-tracker.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "An individual investor holds a handful of stocks and wants to know how the portfolio performed, how risky it was, and how it would have looked under different allocations.",
+      "approach": [
+        "Pick a small sample portfolio and build an Excel model with holdings, weights, formulas and scenario switches.",
+        "Calculate daily and cumulative returns and volatility in Python with pandas.",
+        "Bring the results into Power BI for a single-page performance view.",
+        "Summarize what the numbers say about the trade-off between return and risk."
+      ],
+      "subprojects": [
+        {
+          "title": "Excel model",
+          "tool": "Excel",
+          "description": "A portfolio workbook with holdings, weights, lookup formulas and best, base and worst-case scenarios.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on what the scenarios showed."
+        },
+        {
+          "title": "Returns and volatility",
+          "tool": "Python",
+          "description": "A notebook that calculates daily returns, cumulative returns and rolling volatility for each holding and for the portfolio.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence comparing return and risk across the holdings."
+        },
+        {
+          "title": "Performance view",
+          "tool": "Power BI",
+          "description": "A one-page report with portfolio value over time, allocation, and return against volatility for each holding.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on what the report makes easy to see."
+        }
+      ],
+      "chart": {
+        "type": "line",
+        "title": "Portfolio value, indexed to 100",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "series": [{ "name": "Portfolio value (index)", "values": [100, 102, 101, 104, 103, 106, 108, 107, 110, 109, 112, 114] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "ttc-bus-delays",
+      "title": "Toronto Open Data: TTC Bus Delays",
+      "tagline": "When and where do TTC buses run late, and why?",
+      "role_tags": ["Data"],
+      "tools": ["MySQL", "Python", "Tableau"],
+      "course_code": "DBAS56663",
+      "status": "Planned",
+      "dataset": {
+        "name": "TTC Bus Delay Data (City of Toronto Open Data)",
+        "url": "https://open.toronto.ca/dataset/ttc-bus-delay-data/",
+        "note": "Delay incidents logged by the Toronto Transit Commission, with route, date and time, location, incident type and the length of the delay in minutes."
+      },
+      "cover_image": "assets/img/projects/ttc-bus-delays.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "Transit planners and riders both want to know which routes, times of day and incident types account for the most delay, so effort can go where it helps most.",
+      "approach": [
+        "Load one or more years of delay records into MySQL and standardize route, location and incident fields.",
+        "Query delay counts and total delay minutes by route, incident type, hour and day of week.",
+        "Analyze trends over time in Python and check for seasonality.",
+        "Map the busiest delay locations in Tableau. Locations are recorded as street intersections, so they need geocoding first."
+      ],
+      "subprojects": [
+        {
+          "title": "SQL analysis",
+          "tool": "MySQL",
+          "description": "Queries that rank routes and incident types by number of delays and total minutes lost.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on which routes or incident types stand out."
+        },
+        {
+          "title": "Trend analysis",
+          "tool": "Python",
+          "description": "A notebook looking at delays by hour, day of week and month, with simple time-series charts.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on when delays peak."
+        },
+        {
+          "title": "Delay map",
+          "tool": "Tableau",
+          "description": "A map of the locations with the most delay, with filters for route and incident type.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on where delays cluster."
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Delay incidents by day of week",
+        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "series": [{ "name": "Incidents (index)", "values": [70, 75, 80, 80, 85, 50, 40] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "hr-attrition-analytics",
+      "title": "HR Attrition & Workforce Analytics",
+      "tagline": "Who is leaving, from which teams, and what does the data suggest about why?",
+      "role_tags": ["Operations & HR", "BI"],
+      "tools": ["Excel", "Power BI"],
+      "course_code": "",
+      "status": "Planned",
+      "dataset": {
+        "name": "IBM HR Analytics Employee Attrition & Performance (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset",
+        "note": "A fictional dataset created by IBM data scientists: about 1,500 employees with role, department, tenure, satisfaction scores and an attrition flag."
+      },
+      "cover_image": "assets/img/projects/hr-attrition-analytics.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "An HR team wants to understand where attrition is highest and which factors, such as overtime, tenure or job role, are associated with employees leaving.",
+      "approach": [
+        "Review the data in Excel and document what each field means.",
+        "Build a Power BI model with DAX measures for headcount, attrition count and attrition rate.",
+        "Add drill-downs by department, job role, tenure band and overtime.",
+        "Summarize the segments that most need attention."
+      ],
+      "subprojects": [
+        {
+          "title": "Data review",
+          "tool": "Excel",
+          "description": "A first pass through the data: field definitions, value ranges and a few pivot tables to understand the workforce.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on anything notable about the workforce profile."
+        },
+        {
+          "title": "DAX measures",
+          "tool": "Power BI",
+          "description": "Measures for headcount, attrition count, attrition rate and average tenure, written in DAX and documented.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence with the overall attrition rate and how you calculated it."
+        },
+        {
+          "title": "Segment drill-downs",
+          "tool": "Power BI",
+          "description": "Report pages that drill from the company view into department, job role, tenure band and overtime.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on which segment has the highest attrition."
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Attrition rate by department",
+        "unit": "%",
+        "labels": ["Sales", "Research & Development", "Human Resources"],
+        "series": [{ "name": "Attrition rate", "values": [20, 15, 18] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "delivery-performance",
+      "title": "Supply Chain Delivery Performance",
+      "tagline": "How often do orders arrive on time, and where do the delays build up?",
+      "role_tags": ["Operations & HR", "Data"],
+      "tools": ["Excel", "Tableau"],
+      "course_code": "",
+      "status": "Planned",
+      "dataset": {
+        "name": "DataCo Smart Supply Chain for Big Data Analysis (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis",
+        "note": "About 180,000 order records from the company DataCo Global, with shipping mode, scheduled and actual shipping days, a late-delivery flag, region and product category."
+      },
+      "cover_image": "assets/img/projects/delivery-performance.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "An operations manager needs to know the on-time delivery rate, how actual lead times compare with what was promised, and which shipping modes or regions cause the most late orders.",
+      "approach": [
+        "Clean and sample the data in Excel, and define on-time delivery and lead time clearly.",
+        "Calculate on-time rate and average lead time by shipping mode, region and product category.",
+        "Build a Tableau dashboard with trend, breakdown and a late-order drill-down.",
+        "Recommend where to focus first."
+      ],
+      "subprojects": [
+        {
+          "title": "Lead-time analysis",
+          "tool": "Excel",
+          "description": "Pivot tables comparing scheduled and actual shipping days by shipping mode, region and category.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the gap between scheduled and actual lead time."
+        },
+        {
+          "title": "Delivery dashboard",
+          "tool": "Tableau",
+          "description": "A dashboard with on-time rate over time, breakdowns by shipping mode and region, and a list of the worst-performing lanes.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on where late deliveries concentrate."
+        }
+      ],
+      "chart": {
+        "type": "line",
+        "title": "On-time delivery rate by month",
+        "unit": "%",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "series": [{ "name": "On-time rate", "values": [50, 52, 51, 53, 52, 54, 53, 55, 54, 53, 55, 56] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "ecommerce-database-design",
+      "title": "E-commerce Database Design",
+      "tagline": "A normalized MySQL schema, documented and tested against ten business questions.",
+      "role_tags": ["Business Analyst", "Data"],
+      "tools": ["MySQL"],
+      "course_code": "DBAS56663",
+      "status": "In progress",
+      "dataset": {
+        "name": "Brazilian E-Commerce Public Dataset by Olist (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+        "note": "About 100,000 orders placed on the Olist marketplace between 2016 and 2018, spread across linked tables for orders, items, customers, sellers, products, payments and reviews."
+      },
+      "cover_image": "assets/img/projects/ecommerce-database-design.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "An online marketplace needs a database that stores orders, customers, sellers, products and payments without duplication, and that can answer everyday business questions quickly and reliably.",
+      "approach": [
+        "Model the entities and relationships in an ER diagram.",
+        "Create a normalized MySQL schema with primary keys, foreign keys and constraints, then load the data.",
+        "Write SQL to answer ten business questions, from monthly revenue to late-delivery rates.",
+        "Document every table and column in a data dictionary, and add notes on data quality, access and privacy."
+      ],
+      "subprojects": [
+        {
+          "title": "ER diagram",
+          "tool": "MySQL",
+          "description": "An entity-relationship diagram showing each table, its keys, and how the tables connect.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the most important design decision in the model."
+        },
+        {
+          "title": "Schema",
+          "tool": "MySQL",
+          "description": "CREATE TABLE scripts for a normalized schema, with keys, constraints and load scripts.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on how you handled normalization or a tricky constraint."
+        },
+        {
+          "title": "10 business questions",
+          "tool": "MySQL",
+          "description": "Ten questions a manager might ask, each answered with a commented SQL query using joins, aggregation and window functions where useful.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence with the most interesting answer you found."
+        },
+        {
+          "title": "Data dictionary",
+          "tool": "Documentation",
+          "description": "A data dictionary for every table and column, plus governance notes on data quality rules, access and personal information.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on a data quality or governance issue you documented."
+        }
+      ],
+      "chart": null,
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "aws-data-pipeline",
+      "title": "Cloud Data Pipeline on AWS",
+      "tagline": "Raw files in S3, SQL in Athena and a dashboard on top: a small pipeline, end to end.",
+      "role_tags": ["AI", "Data"],
+      "tools": ["AWS", "Power BI"],
+      "course_code": "INFO50954",
+      "status": "Planned",
+      "dataset": {
+        "name": "NYC TLC Trip Record Data (Registry of Open Data on AWS)",
+        "url": "https://registry.opendata.aws/nyc-tlc-trip-records-pds/",
+        "note": "Monthly Parquet files of taxi and for-hire vehicle trips published by the New York City Taxi and Limousine Commission. The project uses a small sample of months to stay within the AWS free tier."
+      },
+      "cover_image": "assets/img/projects/aws-data-pipeline.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "An analytics team wants trip data to be queryable with SQL and visible on a dashboard without managing servers, and wants the cost and the architecture to be easy to explain.",
+      "approach": [
+        "Draw the architecture: storage, catalog, query and visualization layers.",
+        "Store a sample of trip files in Amazon S3 and define the table with AWS Glue or Athena.",
+        "Query the data with Amazon Athena to produce summary tables.",
+        "Connect a dashboard in Amazon QuickSight or Power BI, and note the cost of each step."
+      ],
+      "subprojects": [
+        {
+          "title": "Architecture",
+          "tool": "AWS",
+          "description": "An architecture diagram showing how data moves from S3 through the catalog and Athena to the dashboard.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on why you chose this design."
+        },
+        {
+          "title": "S3 and Athena",
+          "tool": "AWS",
+          "description": "Bucket layout, table definitions and the Athena SQL used to build the summary tables.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on what you learned about querying files in place, including cost."
+        },
+        {
+          "title": "Dashboard",
+          "tool": "Power BI",
+          "description": "A dashboard of trips, fares and distance over time, built on the Athena summary tables.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the main trend the dashboard shows."
+        }
+      ],
+      "chart": {
+        "type": "line",
+        "title": "Trips per month",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        "series": [{ "name": "Trips (index)", "values": [100, 95, 105, 110, 108, 112] }],
+        "sample": true,
+        "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
+      },
+      "insights": [
+        "TODO: insight 1, with the number that supports it.",
+        "TODO: insight 2, with the number that supports it."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    },
+
+    {
+      "id": "project-management-case-study",
+      "title": "Project Management Case Study",
+      "tagline": "Planning the Retail Sales Dashboard as a real project: scope, schedule, risks and KPIs.",
+      "role_tags": ["Business Analyst"],
+      "tools": ["MS Project", "Excel"],
+      "course_code": "MGMT51463",
+      "status": "In progress",
+      "dataset": {
+        "name": "Superstore Dataset (Kaggle)",
+        "url": "https://www.kaggle.com/datasets/vivek468/superstore-dataset-final",
+        "note": "This is a planning case study rather than a data analysis. It plans the delivery of the Retail Sales Performance Dashboard, which is built on this dataset."
+      },
+      "cover_image": "assets/img/projects/project-management-case-study.webp",
+      "featured": false,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "business_problem": "A dashboard only gets used if it is delivered on time, to the right people, and solves an agreed problem. This case study plans the Retail Sales Dashboard the way a project manager would.",
+      "approach": [
+        "Write a project charter with objectives, scope, deliverables and success criteria.",
+        "Break the work down in a WBS and schedule it as a Gantt chart in MS Project, including the critical path.",
+        "Identify risks and stakeholders, and plan how to respond to and communicate with each.",
+        "Define a KPI scorecard to track whether the project and the dashboard are succeeding."
+      ],
+      "subprojects": [
+        {
+          "title": "Charter",
+          "tool": "Documentation",
+          "description": "A one-page project charter: purpose, objectives, scope, deliverables, assumptions and success criteria.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on how you defined success for the project."
+        },
+        {
+          "title": "WBS and Gantt",
+          "tool": "MS Project",
+          "description": "A work breakdown structure and a Gantt chart with task dependencies, milestones and the critical path.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the critical path and total duration."
+        },
+        {
+          "title": "Risks and stakeholders",
+          "tool": "Excel",
+          "description": "A risk register with likelihood, impact and responses, and a stakeholder map with a communication plan.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the top risk and how you would respond."
+        },
+        {
+          "title": "KPI scorecard",
+          "tool": "Excel",
+          "description": "A scorecard of project and product KPIs with targets and how each one is measured.",
+          "embed_url": "",
+          "image": "",
+          "key_insight": "TODO: one sentence on the KPI you would watch most closely."
+        }
+      ],
+      "_artifacts_help": "Downloadable documents with previews. Save each file in assets/docs/ and a screenshot in assets/img/projects/, then fill in file and preview_image. Items with an empty file show as 'Coming soon'.",
+      "artifacts": [
+        { "title": "Project charter", "description": "Purpose, scope, deliverables and success criteria.", "file": "", "preview_image": "" },
+        { "title": "Work breakdown structure", "description": "The work, broken into manageable packages.", "file": "", "preview_image": "" },
+        { "title": "Gantt chart (MS Project)", "description": "Schedule, dependencies and critical path.", "file": "", "preview_image": "" },
+        { "title": "Risk register", "description": "Risks with likelihood, impact and responses.", "file": "", "preview_image": "" },
+        { "title": "Stakeholder map", "description": "Who is involved and how to keep them informed.", "file": "", "preview_image": "" },
+        { "title": "KPI scorecard", "description": "Targets and measures for project success.", "file": "", "preview_image": "" }
+      ],
+      "chart": null,
+      "insights": [
+        "TODO: lesson 1 from planning the project.",
+        "TODO: lesson 2 from planning the project."
+      ],
+      "recommendations": [
+        "TODO: recommendation 1."
+      ],
+      "improvements": [
+        "TODO: what you would do differently or add with more time."
+      ]
+    }
+  ]
+}

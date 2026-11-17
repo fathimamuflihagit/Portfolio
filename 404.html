@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f6f7f5">
+
+  <!--
+    GitHub Pages shows this file for any address that does not exist.
+    It is self-contained on purpose (styles are inline), because a missing page
+    can be requested from any folder depth and relative links would break.
+  -->
+  <style>
+    :root {
+      --bg: #f6f7f5; --ink: #14201f; --ink-2: #44524f; --line: #dfe4e1;
+      --accent: #006b60; --accent-ink: #ffffff; --series-2: #c46a14;
+    }
+    :root[data-theme="dark"] {
+      --bg: #0d1517; --ink: #e9efed; --ink-2: #c0cbc8; --line: #233033;
+      --accent: #4fd1c0; --accent-ink: #06211e; --series-2: #c7812a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; min-height: 100svh;
+      display: grid; place-items: center;
+      padding: 2rem;
+      background:
+        linear-gradient(to right, var(--line) 1px, transparent 1px) center / 4rem 4rem,
+        linear-gradient(to bottom, var(--line) 1px, transparent 1px) center / 4rem 4rem,
+        var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1.0625rem; line-height: 1.6;
+    }
+    main {
+      max-width: 34rem; padding: clamp(1.5rem, 5vw, 3rem);
+      background: var(--bg); border: 1px solid var(--line); border-radius: 16px;
+    }
+    svg { width: 2.5rem; height: 2.5rem; }
+    svg rect { fill: var(--accent); }
+    svg .alt { fill: var(--series-2); }
+    .code { margin: 1.5rem 0 0; color: var(--accent); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9375rem; }
+    h1 { margin: 0.5rem 0 0; font-size: clamp(2rem, 1.4rem + 3vw, 3rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; }
+    p { margin: 1rem 0 0; color: var(--ink-2); }
+    a.btn {
+      display: inline-flex; align-items: center; min-height: 2.875rem; margin-top: 1.75rem; padding: 0.625rem 1.125rem;
+      background: var(--accent); color: var(--accent-ink); border-radius: 10px;
+      font-weight: 600; text-decoration: none;
+    }
+    a.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  </style>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <main>
+    <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+      <rect x="3" y="14" width="5" height="11" rx="1.5"/>
+      <rect x="11.5" y="8" width="5" height="17" rx="1.5"/>
+      <rect class="alt" x="20" y="3" width="5" height="22" rx="1.5"/>
+    </svg>
+    <p class="code">Error 404</p>
+    <h1>This page has no data.</h1>
+    <p>The address may be mistyped, or the page may have moved. The portfolio home page has everything.</p>
+    <a class="btn" id="home-link" href="/">Go to the home page</a>
+  </main>
+
+  <script>
+    // On a github.io project site the home page lives in a sub-folder (for example /Portfolio/).
+    // Work that out from the address so the button always points to the right place.
+    (function () {
+      var link = document.getElementById('home-link');
+      var host = window.location.hostname;
+      var first = window.location.pathname.split('/')[1];
+      if (!/\.github\.io$/i.test(host) || !first) return;
+      var base = '/' + first + '/';
+      fetch(base + 'data/site.json', { method: 'HEAD' })
+        .then(function (response) { if (response.ok) link.setAttribute('href', base); })
+        .catch(function () {});
+    })();
+  </script>
+</body>
+</html>

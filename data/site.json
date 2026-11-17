@@ -1,0 +1,294 @@
+{
+  "_readme": "Everything personal on the site is read from this file. Edit a value, save, and push. Any value that starts with 'TODO:' is hidden on the live site until you replace it. An empty string (\"\") hides the matching link or button. Keys that start with an underscore are notes for you and are ignored by the site.",
+
+  "person": {
+    "name": "Fathima Mufliha",
+    "first_name": "Fathima",
+    "headline": "Aspiring data analyst turning messy data into clear business decisions.",
+    "location": "Greater Toronto Area, Ontario, Canada",
+    "work_preference": "Open to hybrid or on-site roles in the GTA, and remote",
+    "_photo_help": "Leave photo empty to show the initials placeholder. When you have a photo, save it as assets/img/profile.webp (about 800 x 1000 px) and set photo to that path.",
+    "photo": "",
+    "photo_alt": "Portrait of Fathima Mufliha",
+    "resume": "assets/resume.pdf"
+  },
+
+  "site": {
+    "_url_help": "The full address of the live site, ending with a slash. Change this if you rename the repo or add a custom domain.",
+    "url": "https://fathimamuflihagit.github.io/Portfolio/",
+    "last_updated": "2026-11-16",
+    "_formspree_help": "Paste only the form ID from Formspree, for example 'xyzabcde' from https://formspree.io/f/xyzabcde. See the README.",
+    "formspree_id": ""
+  },
+
+  "links": {
+    "_email_help": "Add your email to show the email row and the copy button. Leave empty to hide them.",
+    "email": "",
+    "linkedin": "https://www.linkedin.com/in/fathima-mufliha-2612a218a",
+    "github": "https://github.com/fathimamuflihagit",
+    "tableau_public": ""
+  },
+
+  "availability": {
+    "pill": "Available for Co-op · May 2027",
+    "summary": "Seeking a co-op or internship for Spring or Summer 2027. Available from May 2027."
+  },
+
+  "hero": {
+    "rotator_label": "Open to roles as",
+    "roles": [
+      "Business Intelligence Analyst",
+      "Data Analyst",
+      "Technical Business Analyst",
+      "AI Analyst",
+      "Marketing Analyst",
+      "Financial Analyst",
+      "Operations Analyst",
+      "HR Analyst"
+    ],
+    "primary_cta": "View projects",
+    "secondary_cta": "Download resume"
+  },
+
+  "education": {
+    "credential": "Ontario College Graduate Certificate",
+    "program": "Applied Data Analytics and Visualization",
+    "school": "Sheridan College",
+    "faculty": "Pilon School of Business",
+    "campus": "Hazel McCallion Campus, Mississauga",
+    "status": "Semester 1 student",
+    "expected_graduation": "April 2027"
+  },
+
+  "_stats_help": "Each stat is counted from your data, so it stays honest. Sources you can use: projects_active (In progress + Completed), projects_completed, projects_total, tools, datasets, courses_current, courses_completed, certifications_earned. To type a number yourself, replace \"source\" with \"value\": 5.",
+  "stats": [
+    { "label": "Projects underway", "source": "projects_active" },
+    { "label": "Tools in my toolkit", "source": "tools" },
+    { "label": "Public datasets", "source": "datasets" },
+    { "label": "Courses this semester", "source": "courses_current" }
+  ],
+
+  "about": {
+    "_help": "Three or four short sentences. Rewrite these so they sound like you.",
+    "paragraphs": [
+      "I'm a graduate certificate student in Applied Data Analytics and Visualization at Sheridan College's Pilon School of Business in Mississauga.",
+      "I'm early in this field and I say so plainly. Everything on this site is coursework or self-directed practice on public datasets, built with the tools analysts use every day.",
+      "What I enjoy most is the moment a messy spreadsheet turns into something a team can act on: a clean table, a clear chart, a one-line recommendation.",
+      "TODO: one or two lines about what you did before this program (previous degree or work experience) and how it shapes the way you look at data."
+    ],
+    "bring": [
+      {
+        "title": "Business thinking",
+        "text": "I start with the decision someone needs to make, then work back to the data. Project and performance management coursework gives me the vocabulary: KPIs, stakeholders, scope and risk."
+      },
+      {
+        "title": "Technical skills",
+        "text": "Hands-on practice with Excel, MySQL, Python, R, Power BI and Tableau, plus AWS cloud fundamentals. Beginner level, and building steadily through coursework and projects."
+      },
+      {
+        "title": "Communication",
+        "text": "A chart only helps if people understand it. I aim for clear visuals, plain-language summaries, and a recommendation at the end."
+      }
+    ],
+    "currently_learning": {
+      "_help": "Update this once a month. It shows momentum.",
+      "updated": "November 2026",
+      "intro": "Wrapping up Semester 1. This month I'm focused on:",
+      "items": [
+        "Statistics and data analytics (MATH54937)",
+        "Databases and data governance with MySQL (DBAS56663)",
+        "Visual analytics with AI and cloud platforms (INFO50954)"
+      ]
+    }
+  },
+
+  "recruiter": {
+    "summary": "Graduate certificate student in Applied Data Analytics and Visualization at Sheridan College, expected to finish in April 2027 and looking for a co-op or internship from May 2027. Beginner-level, hands-on experience with Excel, SQL, Python, R, Power BI and Tableau, shown through portfolio projects on public datasets across BI, marketing, finance and operations.",
+    "top_skills": ["Excel", "SQL (MySQL)", "Python", "R", "Power BI", "Tableau"],
+    "work_authorization": "TODO: add one line about your work authorization in Canada."
+  },
+
+  "skills": {
+    "note": "All at beginner level, learned through coursework and practice projects. Select a tool to see the projects that use it.",
+    "_help": "The name of each tool must match the names used in the \"tools\" list of each project in projects.json. \"icon\" is a Simple Icons slug (https://simpleicons.org); leave it empty to show the short monogram instead.",
+    "groups": [
+      {
+        "name": "Analysis",
+        "tools": [
+          { "name": "Excel", "monogram": "XL", "icon": "", "detail": "" },
+          { "name": "Python", "monogram": "Py", "icon": "python", "detail": "pandas, matplotlib" },
+          { "name": "R", "monogram": "R", "icon": "r", "detail": "" }
+        ]
+      },
+      {
+        "name": "Visualization",
+        "tools": [
+          { "name": "Power BI", "monogram": "BI", "icon": "", "detail": "" },
+          { "name": "Tableau", "monogram": "Tb", "icon": "", "detail": "" }
+        ]
+      },
+      {
+        "name": "Data & Cloud",
+        "tools": [
+          { "name": "MySQL", "monogram": "SQL", "icon": "", "detail": "" },
+          { "name": "AWS", "monogram": "AWS", "icon": "", "detail": "Cloud fundamentals" }
+        ]
+      },
+      {
+        "name": "Business & PM",
+        "tools": [
+          { "name": "MS Project", "monogram": "MP", "icon": "", "detail": "" }
+        ],
+        "concepts": ["WBS", "Gantt charts", "Critical path", "KPIs", "Stakeholders", "Risk register"]
+      }
+    ]
+  },
+
+  "role_labels": {
+    "_help": "Short role tags used in projects.json on the left, the full job title shown on the site on the right.",
+    "BI": "Business Intelligence Analyst",
+    "Data": "Data Analyst",
+    "Marketing": "Marketing Analyst",
+    "Finance": "Financial Analyst",
+    "AI": "AI Analyst",
+    "Business Analyst": "Technical Business Analyst",
+    "Operations & HR": "Operations / HR Analyst"
+  },
+
+  "process": {
+    "intro": "Every project here follows the same six steps, so the reasoning is easy to follow from question to recommendation.",
+    "steps": [
+      { "name": "Ask", "text": "Pin down the business question and who needs the answer." },
+      { "name": "Prepare", "text": "Find the right data and check where it came from." },
+      { "name": "Process", "text": "Clean it, document every change, and validate the result." },
+      { "name": "Analyze", "text": "Look for patterns, test assumptions, and measure what matters." },
+      { "name": "Share", "text": "Build a clear visual story for the people who will use it." },
+      { "name": "Act", "text": "Turn the finding into a recommendation someone can act on." }
+    ]
+  },
+
+  "journey": {
+    "_help": "Dates use the format YYYY-MM. The chart draws itself from these dates.",
+    "axis": { "start": "2026-09", "end": "2027-08" },
+    "phases": [
+      {
+        "title": "Semester 1",
+        "start": "2026-09",
+        "end": "2026-12",
+        "status": "In progress",
+        "summary": "Foundations: statistics, databases, analytics platforms and project management.",
+        "courses": [
+          { "code": "MATH54937", "name": "Statistics and Data Analytics" },
+          { "code": "MGMT51463", "name": "Project and Performance Management" },
+          { "code": "DBAS56663", "name": "Data Management, Governance and Databases" },
+          { "code": "INFO50954", "name": "Visual Analytics with AI and Cloud Platforms 1" },
+          { "code": "INFO51486", "name": "Data Analytics and Visualization Platforms" },
+          { "code": "BUSM52262", "name": "Business Competencies and Industry Project Preparation" },
+          { "code": "INFO57747", "name": "Introduction to Data Analytics and Information Systems" }
+        ]
+      },
+      {
+        "title": "Semester 2",
+        "start": "2027-01",
+        "end": "2027-04",
+        "status": "Coming next",
+        "summary": "Visual analytics applied to business functions, plus an industry project.",
+        "courses": [
+          { "code": "", "name": "Visual Analytics for Marketing and Sales" },
+          { "code": "", "name": "Visual Analytics for Logistics, Finance and HR" },
+          { "code": "", "name": "Visual Analytics with AI and Cloud Platforms 2" },
+          { "code": "", "name": "Strategic and Ethical Decision-Making" },
+          { "code": "", "name": "Industry Project: Data Analytics" },
+          { "code": "", "name": "Careers in Data Analytics" }
+        ]
+      },
+      {
+        "title": "Co-op / internship",
+        "start": "2027-05",
+        "end": "2027-08",
+        "status": "Seeking",
+        "summary": "Available from May 2027 for a Spring or Summer work term.",
+        "courses": []
+      }
+    ],
+    "milestones": [
+      { "title": "Expected graduation", "date": "2027-04", "label": "April 2027" }
+    ]
+  },
+
+  "certifications": {
+    "_help": "Status can be Planned, In progress or Earned. When you earn one, change the status, add the date (for example 'March 2027') and paste your credential link into credential_url. Optional: add \"target\": \"2027-03\" to show a planned exam month on the journey chart.",
+    "items": [
+      {
+        "name": "Power BI Data Analyst Associate (PL-300)",
+        "issuer": "Microsoft",
+        "status": "Planned",
+        "date": "",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/power-bi-data-analyst-associate/",
+        "credential_url": ""
+      },
+      {
+        "name": "Tableau Desktop Foundations",
+        "issuer": "Salesforce",
+        "note": "Formerly Tableau Desktop Specialist",
+        "status": "Planned",
+        "date": "",
+        "url": "https://trailhead.salesforce.com/credentials/tableaudesktopfoundations",
+        "credential_url": ""
+      },
+      {
+        "name": "AWS Certified Cloud Practitioner",
+        "issuer": "Amazon Web Services",
+        "status": "Planned",
+        "date": "",
+        "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+        "credential_url": ""
+      },
+      {
+        "name": "Google Data Analytics Professional Certificate",
+        "issuer": "Google, on Coursera",
+        "status": "Planned",
+        "date": "",
+        "url": "https://www.coursera.org/professional-certificates/google-data-analytics",
+        "credential_url": ""
+      }
+    ]
+  },
+
+  "notes": {
+    "_help": "Each note is a Markdown file in the /notes folder. Add an entry here to list it. Set published to false to keep a draft off the site. The section hides itself when nothing is published.",
+    "intro": "Short posts on what I'm learning and how I work.",
+    "items": [
+      {
+        "slug": "how-i-structure-a-case-study",
+        "title": "How I structure every case study on this site",
+        "date": "2026-11-16",
+        "summary": "The nine-part outline behind each project page, and why it starts with a business problem instead of a chart.",
+        "file": "notes/how-i-structure-a-case-study.md",
+        "published": true
+      },
+      {
+        "slug": "note-template",
+        "title": "TODO: title of your next note",
+        "date": "2026-12-01",
+        "summary": "TODO: one sentence on what the note covers.",
+        "file": "notes/note-template.md",
+        "published": false
+      }
+    ]
+  },
+
+  "sections": {
+    "_help": "Short intro lines shown under the section headings.",
+    "bring_title": "What I bring",
+    "featured_intro": "Three projects I'm building to show the whole path, from raw data to a recommendation.",
+    "projects_intro": "Every project uses a real public dataset. Filter by the role you're hiring for, or by tool.",
+    "journey_intro": "Two academic semesters at Sheridan College, then a work term from May 2027.",
+    "certifications_intro": "Planned alongside coursework. Each one is marked as earned only once it is."
+  },
+
+  "contact": {
+    "closing": "Thanks for reading this far. If you're hiring a co-op student who is careful with data and keen to learn, I'd love to hear from you.",
+    "form_intro": "Send a note and I'll reply within a couple of days."
+  }
+}
