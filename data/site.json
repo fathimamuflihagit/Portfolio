@@ -270,6 +270,7 @@
             { "title": "Create dashboards in Power BI", "date": "2026-10-14", "image": "https://learn.microsoft.com/en-us/training/achievements/create-dashboards-power-bi.svg" },
             { "title": "Secure data access in Power BI", "date": "2026-10-14", "image": "https://learn.microsoft.com/en-us/training/achievements/row-level-security-power-bi.svg" }
           ],
+          "request_note": "My full Microsoft Learn transcript is available on request.",
           "request_label": "Request my Microsoft Learn transcript",
           "request_message": "Hi Fathima, could you please send me your Microsoft Learn transcript for the PL-300 learning paths?"
         }
@@ -286,10 +287,43 @@
       {
         "name": "AWS Certified Cloud Practitioner",
         "issuer": "Amazon Web Services",
-        "status": "Planned",
+        "note": "Exam preparation complete through AWS Academy Cloud Foundations. Exam not yet taken.",
+        "status": "In progress",
         "date": "",
         "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
-        "credential_url": ""
+        "credential_url": "",
+        "progress": {
+          "title": "AWS Academy Cloud Foundations",
+          "summary": "Completed all 10 modules of the AWS Academy Cloud Foundations course and earned the AWS Academy Graduate training badge.",
+          "earned_badge": {
+            "title": "AWS Academy Graduate: Cloud Foundations",
+            "issuer": "Amazon Web Services Training and Certification, via Credly",
+            "date": "2026-10-13",
+            "image": "https://images.credly.com/size/340x340/images/e3541a0c-dd4a-4820-8052-5001006efc85/blob",
+            "url": "https://www.credly.com/badges/397a6991-7863-4858-b596-86d5d36b78b6",
+            "url_label": "Verify on Credly",
+            "skills": ["AWS Architecture", "AWS Cloud", "AWS Core Services", "AWS Pricing", "AWS Support"]
+          },
+          "stats": [
+            { "value": "10 / 10", "label": "Course modules" },
+            { "value": "1", "label": "Verified training badge" },
+            { "value": "Oct 2026", "label": "Badge issued" }
+          ],
+          "items_label": "Course modules",
+          "items_style": "list",
+          "items": [
+            { "title": "Cloud Concepts Overview" },
+            { "title": "Cloud Economics and Billing" },
+            { "title": "AWS Global Infrastructure Overview" },
+            { "title": "Cloud Security" },
+            { "title": "Networking and Content Delivery" },
+            { "title": "Compute" },
+            { "title": "Storage" },
+            { "title": "Databases" },
+            { "title": "Cloud Architecture" },
+            { "title": "Automatic Scaling and Monitoring" }
+          ]
+        }
       },
       {
         "name": "Google Data Analytics Professional Certificate",

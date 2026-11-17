@@ -671,19 +671,45 @@ function achievement(entry, className) {
   );
 }
 
+/** A verified badge already earned on the way to the exam (for example a Credly training badge). */
+function earnedBadge(badgeInfo) {
+  if (!badgeInfo || isTodo(badgeInfo.title)) return null;
+  const image = safeUrl(badgeInfo.image, { httpsOnly: true });
+  const link = safeUrl(badgeInfo.url, { httpsOnly: true });
+  const date = parseYm(badgeInfo.date);
+  const art = el('span', { class: 'earned-badge__art' }, icon('check'));
+  if (image) {
+    const img = el('img', { src: image, alt: `${badgeInfo.title} badge`, width: 112, height: 112, loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
+    img.addEventListener('error', () => art.replaceChildren(icon('check')), { once: true });
+    art.replaceChildren(img);
+  }
+  const skills = filled(badgeInfo.skills);
+  return el(
+    'div',
+    { class: 'earned-badge' },
+    art,
+    el(
+      'div',
+      { class: 'earned-badge__body' },
+      el('span', { class: 'badge', 'data-status': 'earned', text: 'Badge earned' }),
+      el('h5', { class: 'earned-badge__title', text: badgeInfo.title }),
+      el('p', { class: 'earned-badge__meta', text: [badgeInfo.issuer, date ? longDate(date) : ''].filter((part) => !isTodo(part)).join(' · ') }),
+      skills.length ? el('ul', { class: 'tag-list earned-badge__skills', 'aria-label': 'Skills' }, skills.map((skill) => el('li', { class: 'tag', text: skill }))) : null,
+      link ? externalLink(link, isTodo(badgeInfo.url_label) ? 'Verify badge' : badgeInfo.url_label, 'text-link', badgeInfo.title) : null
+    )
+  );
+}
+
 /** Training finished before an exam: stats, trophies, badges and a transcript request button. */
 function certProgress(progress, certName) {
   const trophies = (progress.items || []).filter((entry) => !isTodo(entry.title));
   const badges = (progress.badges || []).filter((entry) => !isTodo(entry.title));
   const stats = (progress.stats || []).filter((stat) => !isTodo(stat.value) && !isTodo(stat.label));
-  const request = el(
-    'a',
-    { class: 'btn btn--primary btn--small', href: '#contact' },
-    icon('file'),
-    isTodo(progress.request_label) ? 'Request transcript' : progress.request_label
-  );
+  const request = isTodo(progress.request_label)
+    ? null
+    : el('a', { class: 'btn btn--primary btn--small', href: '#contact' }, icon('file'), progress.request_label);
   // Fill the contact form with a ready-made request, then move the visitor there.
-  request.addEventListener('click', () => {
+  request?.addEventListener('click', () => {
     const message = $('#cf-message');
     if (message && !message.value.trim() && !isTodo(progress.request_message)) message.value = progress.request_message;
     window.setTimeout(() => {
@@ -709,11 +735,21 @@ function certProgress(progress, certName) {
     { class: 'cert-progress' },
     el('h4', { class: 'cert-progress__title', text: isTodo(progress.title) ? 'Training progress' : progress.title }),
     isTodo(progress.summary) ? null : el('p', { class: 'cert-progress__summary', text: progress.summary }),
+    earnedBadge(progress.earned_badge),
     stats.length ? el('dl', { class: 'cert-progress__stats' }, stats.map((stat) => el('div', null, el('dt', { text: stat.label }), el('dd', { text: stat.value })))) : null,
     trophies.length ? el('h5', { class: 'cert-progress__sub', text: isTodo(progress.items_label) ? 'Learning paths' : progress.items_label }) : null,
-    trophies.length ? el('ol', { class: 'trophy-grid', 'aria-label': `Learning paths completed for ${certName}` }, trophies.map((entry) => achievement(entry, 'trophy'))) : null,
+    trophies.length && progress.items_style === 'list'
+      ? el(
+          'ol',
+          { class: 'module-list', 'aria-label': `${isTodo(progress.items_label) ? 'Modules' : progress.items_label} completed` },
+          trophies.map((entry, i) => el('li', null, el('span', { class: 'module-list__check' }, icon('check')), el('span', { class: 'module-list__num', text: `Module ${i + 1}` }), el('span', { text: entry.title })))
+        )
+      : null,
+    trophies.length && progress.items_style !== 'list'
+      ? el('ol', { class: 'trophy-grid', 'aria-label': `Learning paths completed for ${certName}` }, trophies.map((entry) => achievement(entry, 'trophy')))
+      : null,
     badgePanel,
-    el('div', { class: 'cert-progress__foot' }, el('p', { text: 'My full Microsoft Learn transcript is available on request.' }), request)
+    request ? el('div', { class: 'cert-progress__foot' }, el('p', { text: isTodo(progress.request_note) ? 'Full transcript available on request.' : progress.request_note }), request) : null
   );
 }
 
