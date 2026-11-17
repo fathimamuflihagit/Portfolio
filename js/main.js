@@ -619,6 +619,7 @@ function renderCertifications(site) {
   for (const item of items) {
     const details = safeUrl(item.url);
     const credential = safeUrl(item.credential_url);
+    const progress = safeUrl(item.progress_url, { httpsOnly: true });
     host.append(
       el(
         'article',
@@ -631,6 +632,7 @@ function renderCertifications(site) {
           'div',
           { class: 'cert__links' },
           credential ? externalLink(credential, 'View credential', 'text-link', item.name) : null,
+          !credential && progress ? externalLink(progress, isTodo(item.progress_label) ? 'View training progress' : item.progress_label, 'text-link', item.name) : null,
           details ? externalLink(details, credential ? 'About this certification' : 'Exam details', 'text-link', item.name) : null
         )
       )

@@ -16,7 +16,7 @@
   "site": {
     "_url_help": "The full address of the live site, ending with a slash. Change this if you rename the repo or add a custom domain.",
     "url": "https://fathimamuflihagit.github.io/Portfolio/",
-    "last_updated": "2026-11-16",
+    "last_updated": "2026-11-17",
     "_formspree_help": "Paste only the form ID from Formspree, for example 'xyzabcde' from https://formspree.io/f/xyzabcde. See the README.",
     "formspree_id": ""
   },
@@ -217,14 +217,17 @@
   },
 
   "certifications": {
-    "_help": "Status can be Planned, In progress or Earned. When you earn one, change the status, add the date (for example 'March 2027') and paste your credential link into credential_url. Optional: add \"target\": \"2027-03\" to show a planned exam month on the journey chart.",
+    "_help": "Status can be Planned, In progress or Earned. When you earn one, change the status, add the date (for example 'March 2027') and paste your credential link into credential_url. Optional: add \"progress_url\" and \"progress_label\" to link proof of training before the exam (for example a Microsoft Learn transcript). Optional: add \"target\": \"2027-03\" to show a planned exam month on the journey chart.",
     "items": [
       {
         "name": "Power BI Data Analyst Associate (PL-300)",
         "issuer": "Microsoft",
-        "status": "Planned",
+        "note": "Finished all 7 Microsoft Learn learning paths for this exam (22 modules) in October 2026. Exam not yet taken.",
+        "status": "In progress",
         "date": "",
         "url": "https://learn.microsoft.com/en-us/credentials/certifications/power-bi-data-analyst-associate/",
+        "progress_url": "https://learn.microsoft.com/en-us/users/fathimamuflihakottaparamban-8185/transcript/d4mzpi1q5wyx8le",
+        "progress_label": "View training transcript",
         "credential_url": ""
       },
       {
