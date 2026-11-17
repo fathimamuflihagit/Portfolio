@@ -229,10 +229,17 @@ The new project appears in the grid, the filters and the counters automatically.
 | `github_url`, `live_dashboard_url` | Links. Leave as `""` until they exist |
 | `business_problem` | One short paragraph: who needs to decide what? |
 | `approach` | The steps you took, in order |
-| `subprojects` | The tabs on the case-study page (see below) |
+| `subprojects` | The tabs on the case-study page (see below). Each tab can also have `steps` (a short list) and its own `chart` |
 | `chart` | The small chart on the card (see below). Use `null` for no chart; the cover image is shown |
 | `insights`, `recommendations`, `improvements` | Lists of sentences. Leave the `TODO:` lines until you have real findings |
 | `artifacts` | Optional. Downloadable documents with previews (used by the project management case study) |
+| `context` | Optional. Shown in place of the course line, for example "Statistics course project, Sheridan College" |
+| `highlights` | Optional. Headline numbers shown under the title of a finished project: `value`, `label` and an optional `note` |
+| `charts` | Optional. Several interactive charts shown together in the visuals section (see the coffee chain project). Types: `bar` (add `"horizontal": true` for sideways bars), `line` and `scatter` (with an optional `trendline`) |
+| `comparison` | Optional. Two groups side by side, one row per measure, with small bars |
+| `request` | Optional. Adds a button that opens the contact form with a question about this project already filled in |
+| `section_order` | Optional. The order of the case-study sections, for example results first for a finished project |
+| `hide_cover` | Optional. `true` keeps the cover image on cards but hides it on the case-study page |
 
 ### Subprojects (the tabs)
 

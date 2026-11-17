@@ -362,7 +362,7 @@
   "sections": {
     "_help": "Short intro lines shown under the section headings.",
     "bring_title": "What I bring",
-    "featured_intro": "Three projects I'm building to show the whole path, from raw data to a recommendation.",
+    "featured_intro": "Three projects that show the whole path, from raw data to a recommendation.",
     "projects_intro": "Every project uses a real public dataset. Filter by the role you're hiring for, or by tool.",
     "journey_intro": "Two academic semesters at Sheridan College, then a work term from May 2027.",
     "certifications_intro": "Planned alongside coursework. Each one is marked as earned only once it is."

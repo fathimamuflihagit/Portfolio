@@ -247,7 +247,6 @@ function withAlpha(hex, alpha) {
   return `rgba(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}, ${alpha})`;
 }
 
-const formatNumber = (value) => new Intl.NumberFormat('en-CA', { maximumFractionDigits: 1 }).format(value);
 
 /** Break a long category label onto two lines so every bar keeps its label. */
 function wrapLabel(label, limit = 12) {
@@ -283,11 +282,170 @@ const crosshairPlugin = {
   },
 };
 
+/** Number formatting for one chart: optional prefix ("$"), suffix ("K", "%") and decimals. */
+function formatter(spec, axis = 'y') {
+  const prefix = (axis === 'x' ? spec.x_prefix : spec.prefix) || '';
+  const unit = (axis === 'x' ? spec.x_unit : spec.unit) || '';
+  const decimals = Number.isInteger(spec.decimals) ? spec.decimals : 1;
+  const format = new Intl.NumberFormat('en-CA', { maximumFractionDigits: axis === 'x' ? 1 : decimals });
+  return (value) => `${prefix}${format.format(value)}${unit}`;
+}
+
+/** Which colour slot each bar uses: by group (for example Urban / Suburban) or by series. */
+const barGroups = (spec) => (Array.isArray(spec.groups) && spec.groups.length === (spec.labels || []).length ? spec.groups : null);
+
+function tooltipStyle(colors) {
+  return {
+    backgroundColor: colors.ink,
+    titleColor: colors.surface,
+    bodyColor: colors.surface,
+    footerColor: colors.surface,
+    titleFont: { family: colors.font, size: 11, weight: '500' },
+    bodyFont: { family: colors.font, size: 13, weight: '600' },
+    footerFont: { family: colors.font, size: 10, weight: '400' },
+    padding: 9,
+    cornerRadius: 6,
+    caretSize: 0,
+    boxWidth: 10,
+    boxHeight: 10,
+    boxPadding: 4,
+  };
+}
+
+function axisTitle(text, colors) {
+  return text ? { display: true, text, color: colors.muted, font: { family: colors.font, size: 11, weight: '500' }, padding: { top: 6, bottom: 2 } } : { display: false };
+}
+
+// Writes the name next to a few chosen points ("callout": true in the data), so the story needs no hovering.
+const calloutPlugin = {
+  id: 'callouts',
+  afterDatasetsDraw(chart, _args, options) {
+    // Narrow charts have no room for names; hovering still shows them.
+    if (options.hidden || chart.width < 480) return;
+    const { ctx, chartArea } = chart;
+    ctx.save();
+    ctx.font = `600 11px ${options.font}`;
+    ctx.textBaseline = 'middle';
+    chart.data.datasets.forEach((dataset, di) => {
+      if (dataset.type === 'line' || !chart.isDatasetVisible(di)) return;
+      chart.getDatasetMeta(di).data.forEach((point, pi) => {
+        const raw = dataset.data[pi];
+        if (!raw || !raw.callout) return;
+        const text = raw.label;
+        const width = ctx.measureText(text).width;
+        const left = point.x + 10 + width > chartArea.right;
+        const x = left ? point.x - 10 - width : point.x + 10;
+        const y = point.y;
+        ctx.fillStyle = options.halo;
+        ctx.fillRect(x - 3, y - 8, width + 6, 16);
+        ctx.fillStyle = options.color;
+        ctx.fillText(text, x, y);
+      });
+    });
+    ctx.restore();
+  },
+};
+
+function scatterConfig(spec, colors, compact) {
+  const fy = formatter(spec, 'y');
+  const fx = formatter(spec, 'x');
+  const fontSize = compact ? 10 : 12;
+  const series = (spec.series || []).slice(0, 2);
+  const points = series.flatMap((entry) => entry.points || []);
+  const xs = points.map((point) => point.x);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+
+  const datasets = series.map((entry, index) => ({
+    type: 'scatter',
+    label: entry.name,
+    data: (entry.points || []).map((point) => ({ x: point.x, y: point.y, label: point.label, callout: point.callout === true })),
+    backgroundColor: colors.series[index],
+    borderColor: colors.surface,
+    borderWidth: 2,
+    pointRadius: compact ? 4.5 : 6.5,
+    pointHoverRadius: compact ? 6 : 8.5,
+    pointHitRadius: 10,
+    order: 1,
+  }));
+
+  const trend = spec.trendline;
+  if (trend && Number.isFinite(trend.slope) && Number.isFinite(trend.intercept)) {
+    const pad = (maxX - minX) * 0.04;
+    const from = minX - pad;
+    const to = maxX + pad;
+    datasets.push({
+      type: 'line',
+      label: trend.name || 'Trend line',
+      data: [
+        { x: from, y: trend.intercept + trend.slope * from },
+        { x: to, y: trend.intercept + trend.slope * to },
+      ],
+      borderColor: colors.ink,
+      borderWidth: 1.5,
+      borderDash: [5, 4],
+      pointRadius: 0,
+      pointHitRadius: 0,
+      fill: false,
+      order: 2,
+    });
+  }
+
+  return {
+    type: 'scatter',
+    data: { datasets },
+    plugins: [calloutPlugin],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: prefersReducedMotion() ? false : { duration: 500 },
+      layout: { padding: { top: 8, right: 8, bottom: 0, left: 0 } },
+      interaction: { mode: 'nearest', intersect: true },
+      plugins: {
+        legend: { display: false },
+        callouts: { hidden: compact, color: colors.ink, halo: withAlpha(colors.surface, 0.85), font: colors.font },
+        tooltip: {
+          ...tooltipStyle(colors),
+          filter: (item) => item.dataset.type !== 'line',
+          callbacks: {
+            title: (items) => items[0]?.raw?.label || '',
+            label: (item) => ` ${item.dataset.label}: ${fx(item.parsed.x)} ${spec.x_short || ''}, ${fy(item.parsed.y)} ${spec.y_short || ''}`.replace(/\s+,/g, ','),
+            labelColor: (item) => ({ borderColor: item.dataset.backgroundColor, backgroundColor: item.dataset.backgroundColor }),
+            footer: () => (spec.sample ? 'Sample data' : ''),
+          },
+        },
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          grace: '4%',
+          title: compact ? { display: false } : axisTitle(spec.x_title, colors),
+          grid: { color: colors.line, drawTicks: false },
+          border: { color: colors.lineStrong },
+          ticks: { color: colors.muted, font: { family: colors.font, size: fontSize }, maxTicksLimit: compact ? 4 : 7, padding: 6, callback: (value) => fx(value) },
+        },
+        y: {
+          grace: '8%',
+          title: compact ? { display: false } : axisTitle(spec.y_title, colors),
+          grid: { color: colors.line, drawTicks: false },
+          border: { display: false },
+          ticks: { color: colors.muted, font: { family: colors.font, size: fontSize }, maxTicksLimit: compact ? 3 : 6, padding: 6, callback: (value) => fy(value) },
+        },
+      },
+    },
+  };
+}
+
 function chartConfig(spec, colors, compact) {
+  if (spec.type === 'scatter') return scatterConfig(spec, colors, compact);
+
   const isLine = spec.type === 'line';
-  const unit = spec.unit || '';
+  const horizontal = !isLine && spec.horizontal === true;
+  const groups = isLine ? null : barGroups(spec);
+  const fy = formatter(spec, 'y');
   const series = (spec.series || []).slice(0, 2);
   const fontSize = compact ? 10 : 12;
+  const highlight = Number.isInteger(spec.highlight) ? spec.highlight : -1;
 
   const datasets = series.map((entry, index) => {
     const color = colors.series[index];
@@ -312,77 +470,71 @@ function chartConfig(spec, colors, compact) {
         pointHitRadius: 14,
       };
     }
+    // Bars: coloured by group when groups are given; one bar can be picked out with "highlight".
+    const fill = entry.values.map((_, i) => {
+      const base = groups ? colors.series[groups[i] === 1 ? 1 : 0] : color;
+      return highlight >= 0 && i !== highlight ? withAlpha(base, 0.35) : base;
+    });
     return {
       label: entry.name,
       data: entry.values,
-      backgroundColor: color,
-      hoverBackgroundColor: withAlpha(color, 0.78),
-      borderRadius: { topLeft: 4, topRight: 4 },
-      borderSkipped: 'bottom',
-      maxBarThickness: 24,
-      categoryPercentage: 0.72,
-      barPercentage: 0.86,
+      backgroundColor: fill,
+      hoverBackgroundColor: fill.map((value) => (value.startsWith('#') ? withAlpha(value, 0.8) : value)),
+      borderRadius: horizontal ? { topRight: 4, bottomRight: 4 } : { topLeft: 4, topRight: 4 },
+      borderSkipped: horizontal ? 'left' : 'bottom',
+      maxBarThickness: horizontal ? 18 : 24,
+      categoryPercentage: horizontal ? 0.8 : 0.72,
+      barPercentage: horizontal ? 0.82 : 0.86,
     };
   });
 
+  const categoryScale = {
+    grid: { display: false },
+    border: { color: colors.lineStrong },
+    ticks: { color: horizontal ? colors.ink : colors.muted, font: { family: colors.font, size: fontSize }, maxRotation: 0, autoSkip: isLine, autoSkipPadding: 10, padding: 4 },
+  };
+  const valueScale = {
+    beginAtZero: !isLine,
+    grace: '10%',
+    title: compact ? { display: false } : axisTitle(spec.value_title, colors),
+    grid: { color: colors.line, drawTicks: false },
+    border: { display: false },
+    ticks: { color: colors.muted, font: { family: colors.font, size: fontSize }, maxTicksLimit: compact ? 3 : 5, padding: 6, callback: (value) => fy(value) },
+  };
+
   return {
     type: isLine ? 'line' : 'bar',
-    data: { labels: (spec.labels || []).map((label) => (isLine ? label : wrapLabel(label, compact ? 11 : 16))), datasets },
+    data: { labels: (spec.labels || []).map((label) => (isLine || horizontal ? label : wrapLabel(label, compact ? 11 : 16))), datasets },
     plugins: [crosshairPlugin],
     options: {
+      indexAxis: horizontal ? 'y' : 'x',
       responsive: true,
       maintainAspectRatio: false,
       animation: prefersReducedMotion() ? false : { duration: 450 },
-      layout: { padding: { top: 8, right: isLine ? 10 : 2, bottom: 0, left: 0 } },
-      interaction: { mode: 'index', intersect: false },
+      layout: { padding: { top: 8, right: isLine ? 10 : 6, bottom: 0, left: 0 } },
+      interaction: { mode: 'index', intersect: false, axis: horizontal ? 'y' : 'x' },
       plugins: {
         legend: { display: false },
         crosshair: { color: colors.lineStrong },
         tooltip: {
-          backgroundColor: colors.ink,
-          titleColor: colors.surface,
-          bodyColor: colors.surface,
-          footerColor: colors.surface,
-          titleFont: { family: colors.font, size: 11, weight: '500' },
-          bodyFont: { family: colors.font, size: 13, weight: '600' },
-          footerFont: { family: colors.font, size: 10, weight: '400' },
-          padding: 9,
-          cornerRadius: 6,
-          caretSize: 0,
-          displayColors: series.length > 1,
-          boxWidth: 10,
-          boxHeight: 2,
+          ...tooltipStyle(colors),
+          displayColors: series.length > 1 || Boolean(groups),
           callbacks: {
             title: (items) => String((spec.labels || [])[items[0].dataIndex] ?? ''),
             label: (item) => {
-              const value = `${formatNumber(item.parsed.y)}${unit}`;
+              const value = fy(horizontal ? item.parsed.x : item.parsed.y);
+              if (groups) return ` ${value}  ${(spec.group_names || [])[groups[item.dataIndex]] || ''}`;
               return series.length > 1 ? ` ${value}  ${item.dataset.label}` : value;
             },
-            labelColor: (item) => ({ borderColor: item.dataset.borderColor || item.dataset.backgroundColor, backgroundColor: item.dataset.borderColor || item.dataset.backgroundColor }),
+            labelColor: (item) => {
+              const color = Array.isArray(item.dataset.backgroundColor) ? item.dataset.backgroundColor[item.dataIndex] : item.dataset.borderColor || item.dataset.backgroundColor;
+              return { borderColor: color, backgroundColor: color };
+            },
             footer: () => (spec.sample ? 'Sample data' : ''),
           },
         },
       },
-      scales: {
-        x: {
-          grid: { display: false },
-          border: { color: colors.lineStrong },
-          ticks: { color: colors.muted, font: { family: colors.font, size: fontSize }, maxRotation: 0, autoSkip: isLine, autoSkipPadding: 10, padding: 4 },
-        },
-        y: {
-          beginAtZero: !isLine,
-          grace: '10%',
-          grid: { color: colors.line, drawTicks: false },
-          border: { display: false },
-          ticks: {
-            color: colors.muted,
-            font: { family: colors.font, size: fontSize },
-            maxTicksLimit: compact ? 3 : 5,
-            padding: 6,
-            callback: (value) => `${formatNumber(value)}${unit}`,
-          },
-        },
-      },
+      scales: horizontal ? { y: categoryScale, x: valueScale } : { x: categoryScale, y: valueScale },
     },
   };
 }
@@ -410,10 +562,16 @@ export function refreshCharts() {
 
 /** A plain-language description of the chart for screen readers. */
 function chartSummary(spec) {
+  const fy = formatter(spec, 'y');
+  if (spec.type === 'scatter') {
+    const fx = formatter(spec, 'x');
+    const parts = (spec.series || []).map((entry) => `${entry.name}: ${(entry.points || []).map((point) => `${point.label} ${fx(point.x)}, ${fy(point.y)}`).join('; ')}`);
+    const trend = spec.trendline ? ` ${spec.trendline.name || 'Trend line'} shown.` : '';
+    return `Scatter plot${spec.sample ? ' with sample data' : ''}. ${spec.title}. ${spec.x_title || 'x'} against ${spec.y_title || 'y'}. ${parts.join('. ')}.${trend}`;
+  }
   const kind = spec.type === 'line' ? 'Line chart' : 'Bar chart';
-  const unit = spec.unit || '';
   const parts = (spec.series || []).slice(0, 2).map((entry) => {
-    const values = entry.values.map((value, i) => `${spec.labels[i]} ${formatNumber(value)}${unit}`).join(', ');
+    const values = entry.values.map((value, i) => `${spec.labels[i]} ${fy(value)}`).join(', ');
     return `${entry.name}: ${values}`;
   });
   return `${kind}${spec.sample ? ' with sample data' : ''}. ${spec.title}. ${parts.join('. ')}.`;
@@ -421,23 +579,51 @@ function chartSummary(spec) {
 
 function chartLegend(spec) {
   const series = (spec.series || []).slice(0, 2);
-  if (series.length < 2) return null; // one series needs no legend: the title already names it
+  const entries = [];
+  if (spec.type !== 'line' && spec.type !== 'scatter' && barGroups(spec)) {
+    (spec.group_names || []).slice(0, 2).forEach((name, i) => entries.push({ name, slot: i, kind: 'box' }));
+  } else if (series.length > 1) {
+    series.forEach((entry, i) => entries.push({ name: entry.name, slot: i, kind: spec.type === 'line' ? 'line' : spec.type === 'scatter' ? 'dot' : 'box' }));
+  }
+  if (spec.type === 'scatter' && spec.trendline) entries.push({ name: spec.trendline.name || 'Trend line', slot: 'trend', kind: 'dash' });
+  if (!entries.length) return null; // one series needs no legend: the title already names it
   return el(
     'div',
-    { class: `chart-legend${spec.type === 'line' ? '' : ' chart-legend--bar'}` },
-    series.map((entry) => el('span', null, el('i'), entry.name))
+    { class: 'chart-legend' },
+    entries.map((entry) => el('span', null, el('i', { class: `legend-key legend-key--${entry.kind}`, 'data-slot': String(entry.slot) }), entry.name))
   );
 }
 
 function chartTable(spec) {
-  const series = (spec.series || []).slice(0, 2);
-  const unit = spec.unit || '';
+  const fy = formatter(spec, 'y');
   const table = el('table', { class: 'data-table' });
   table.append(el('caption', { text: `${spec.title}${spec.sample ? ' (sample data)' : ''}` }));
-  table.append(el('thead', null, el('tr', null, el('th', { scope: 'col', text: 'Category' }), series.map((entry) => el('th', { scope: 'col', text: entry.name })))));
   const body = el('tbody');
+
+  if (spec.type === 'scatter') {
+    const fx = formatter(spec, 'x');
+    const multi = (spec.series || []).length > 1;
+    table.append(
+      el('thead', null, el('tr', null, el('th', { scope: 'col', text: spec.point_title || 'Item' }), multi ? el('th', { scope: 'col', text: spec.series_title || 'Group' }) : null, el('th', { scope: 'col', text: spec.x_title || 'x' }), el('th', { scope: 'col', text: spec.y_title || 'y' })))
+    );
+    for (const entry of spec.series || []) {
+      for (const point of entry.points || []) {
+        body.append(el('tr', null, el('th', { scope: 'row', text: point.label || '' }), multi ? el('td', { class: 'is-text', text: entry.name }) : null, el('td', { text: fx(point.x) }), el('td', { text: fy(point.y) })));
+      }
+    }
+    table.append(body);
+    return table;
+  }
+
+  const series = (spec.series || []).slice(0, 2);
+  const groups = barGroups(spec);
+  table.append(
+    el('thead', null, el('tr', null, el('th', { scope: 'col', text: spec.category_title || 'Category' }), groups ? el('th', { scope: 'col', text: spec.group_title || 'Group' }) : null, series.map((entry) => el('th', { scope: 'col', text: entry.name }))))
+  );
   (spec.labels || []).forEach((label, i) => {
-    body.append(el('tr', null, el('th', { scope: 'row', text: label }), series.map((entry) => el('td', { text: `${formatNumber(entry.values[i])}${unit}` }))));
+    body.append(
+      el('tr', null, el('th', { scope: 'row', text: label }), groups ? el('td', { class: 'is-text', text: (spec.group_names || [])[groups[i]] || '' }) : null, series.map((entry) => el('td', { text: fy(entry.values[i]) })))
+    );
   });
   table.append(body);
   return table;
@@ -477,7 +663,12 @@ function startChart(canvas) {
     .catch(() => job.onFail && job.onFail());
 }
 
-const hasChart = (project) => project.chart && Array.isArray(project.chart.series) && project.chart.series.length > 0 && Array.isArray(project.chart.labels);
+const validChart = (spec) =>
+  Boolean(spec) &&
+  Array.isArray(spec.series) &&
+  spec.series.length > 0 &&
+  (spec.type === 'scatter' ? spec.series.every((entry) => Array.isArray(entry.points)) : Array.isArray(spec.labels));
+const hasChart = (project) => validChart(project.chart);
 
 /* 5. Project cards and featured rows --------------------------------------- */
 
@@ -719,6 +910,13 @@ export function initProjectGrid({ site, projects }) {
 
 /* 7. Case-study page ------------------------------------------------------- */
 
+/** A button that opens the contact form on the home page with a question about this project filled in. */
+function requestButton(project, className = 'btn btn--secondary') {
+  if (!project.request) return null;
+  const label = isTodo(project.request.label) ? 'Ask about this project' : project.request.label;
+  return el('a', { class: className, href: `./?about=${encodeURIComponent(project.id)}#contact` }, icon('file'), label);
+}
+
 function setMeta(selector, attribute, value) {
   const node = document.head.querySelector(selector);
   if (node && value) node.setAttribute(attribute, value);
@@ -755,13 +953,15 @@ function caseHeader(site, project) {
     el('p', { class: 'case__tagline', text: project.tagline })
   );
 
-  if (github || live) {
+  const request = requestButton(project, github || live ? 'btn btn--secondary' : 'btn btn--primary');
+  if (github || live || request) {
     header.append(
       el(
         'div',
         { class: 'case__actions' },
         live ? externalLink(live, 'Open live dashboard', 'btn btn--primary') : null,
-        github ? externalLink(github, 'View code on GitHub', 'btn btn--secondary') : null
+        github ? externalLink(github, 'View code on GitHub', live ? 'btn btn--secondary' : 'btn btn--primary') : null,
+        request
       )
     );
   }
@@ -779,7 +979,11 @@ function caseHeader(site, project) {
       { class: 'case__facts' },
       fact('Dataset', datasetUrl ? externalLink(datasetUrl, project.dataset.name) : project.dataset?.name || 'To be confirmed'),
       fact('Tools', (project.tools || []).join(', ')),
-      course ? fact('Related course', el('span', { class: 'code', text: course.code }), ` ${course.name}`) : fact('Suited to', roles)
+      course
+        ? fact('Related course', el('span', { class: 'code', text: course.code }), ` ${course.name}`)
+        : !isTodo(project.context)
+          ? fact('Context', project.context)
+          : fact('Suited to', roles)
     )
   );
   return header;
@@ -787,7 +991,7 @@ function caseHeader(site, project) {
 
 function chartBlock(spec) {
   const canvas = el('canvas', { role: 'img', 'aria-label': chartSummary(spec) });
-  const canvasBox = el('div', { class: 'chart-block__canvas' }, canvas);
+  const canvasBox = el('div', { class: `chart-block__canvas${spec.size === 'tall' ? ' is-tall' : spec.size === 'short' ? ' is-short' : ''}` }, canvas);
   const tableBox = el('div', { hidden: true }, chartTable(spec));
   const toggle = el('button', { class: 'btn btn--secondary btn--small', type: 'button', 'aria-pressed': 'false' }, icon('table'), el('span', { text: 'View as table' }));
   const legend = chartLegend(spec);
@@ -815,8 +1019,79 @@ function chartBlock(spec) {
     canvasBox,
     legend,
     tableBox,
+    isTodo(spec.caption) ? null : el('p', { class: 'chart-block__caption', text: spec.caption }),
     spec.sample ? el('p', { class: 'chart-block__note', text: 'These are placeholder values that show the chart layout. Real results will replace them when the analysis is complete.' }) : null
   );
+}
+
+/** Headline numbers for a finished project. */
+function highlightStrip(project) {
+  const items = (project.highlights || []).filter((item) => !isTodo(item.value) && !isTodo(item.label));
+  if (!items.length) return null;
+  return el(
+    'div',
+    { class: 'wrap' },
+    el(
+      'dl',
+      { class: 'case-highlights', 'aria-label': 'Results at a glance' },
+      items.map((item, i) => {
+        const node = el('div', { class: 'case-highlight' }, el('dt', { text: item.label }), el('dd', { class: 'case-highlight__value', text: item.value }), isTodo(item.note) ? null : el('dd', { class: 'case-highlight__note', text: item.note }));
+        node.style.setProperty('--i', String(i));
+        return node;
+      })
+    )
+  );
+}
+
+/** Two groups side by side (for example urban and suburban shops), one row per measure. */
+function comparisonBlock(spec) {
+  if (!spec || !Array.isArray(spec.columns) || !Array.isArray(spec.rows) || spec.columns.length < 2) return null;
+  const rows = spec.rows.filter((row) => !isTodo(row.label));
+  return el(
+    'figure',
+    { class: 'compare' },
+    el('figcaption', { class: 'compare__title', text: spec.title || 'Comparison' }),
+    el(
+      'div',
+      { class: 'compare__table', role: 'table', 'aria-label': spec.title || 'Comparison' },
+      el(
+        'div',
+        { class: 'compare__row compare__row--head', role: 'row' },
+        el('span', { role: 'columnheader', class: 'sr-only', text: 'Measure' }),
+        spec.columns.slice(0, 2).map((column, i) => el('span', { role: 'columnheader', class: 'compare__col', 'data-slot': String(i) }, el('i', { 'aria-hidden': 'true' }), column))
+      ),
+      rows.map((row) => {
+        const values = (row.values || []).slice(0, 2);
+        const numbers = (row.bars || []).slice(0, 2);
+        const max = Math.max(...numbers, 0);
+        return el(
+          'div',
+          { class: 'compare__row', role: 'row' },
+          el('span', { role: 'rowheader', class: 'compare__label', text: row.label }),
+          values.map((value, i) => {
+            const cell = el('span', { role: 'cell', class: 'compare__cell', 'data-slot': String(i) }, el('b', { text: value }));
+            if (max > 0 && Number.isFinite(numbers[i])) {
+              const bar = el('span', { class: 'compare__bar', 'aria-hidden': 'true' });
+              bar.style.setProperty('--w', `${Math.round((numbers[i] / max) * 100)}%`);
+              cell.append(bar);
+            }
+            return cell;
+          })
+        );
+      })
+    ),
+    isTodo(spec.note) ? null : el('p', { class: 'chart-block__caption', text: spec.note })
+  );
+}
+
+function chartGallery(project) {
+  const charts = (project.charts || []).filter(validChart);
+  if (!charts.length) return null;
+  return el('div', { class: 'chart-gallery' }, charts.map((spec) => {
+    const block = chartBlock(spec);
+    if (spec.wide) block.classList.add('is-wide');
+    return block;
+  }));
 }
 
 function embedBlock(sub) {
@@ -880,13 +1155,14 @@ function subprojectTabs(project) {
       text: sub.title,
     });
 
-    const visual = embedBlock(sub);
+    const visual = validChart(sub.chart) ? chartBlock(sub.chart) : embedBlock(sub);
     const hasInsight = !isTodo(sub.key_insight);
     const panel = el(
       'div',
       { class: 'tabs__panel', role: 'tabpanel', id: `panel-${index}`, 'aria-labelledby': `tab-${index}`, tabindex: '0', hidden: index !== 0 },
       el('div', { class: 'tabs__panel-head' }, el('h3', { text: sub.title }), sub.tool ? el('span', { class: 'tag', text: sub.tool }) : null),
       el('p', { text: sub.description }),
+      filled(sub.steps).length ? el('ul', { class: 'bullets tabs__steps' }, filled(sub.steps).map((step) => el('li', { text: step }))) : null,
       visual,
       hasInsight ? el('div', { class: 'insight' }, el('span', { class: 'insight__label', text: 'Key insight' }), el('p', { text: sub.key_insight })) : null
     );
@@ -1000,8 +1276,15 @@ function caseSections(site, project) {
     },
     {
       id: 'visuals',
-      title: 'Dashboard and visuals',
-      content: [hasChart(project) ? chartBlock(project.chart) : null, subprojectTabs(project), artifactGrid(project)],
+      title: isTodo(project.visuals_title) ? 'Dashboard and visuals' : project.visuals_title,
+      content: [
+        isTodo(project.visuals_intro) ? null : el('p', { class: 'case-intro', text: project.visuals_intro }),
+        chartGallery(project) || (hasChart(project) ? chartBlock(project.chart) : null),
+        comparisonBlock(project.comparison),
+        (project.subprojects || []).length ? el('h3', { class: 'case-subhead', text: isTodo(project.tabs_title) ? 'Part by part' : project.tabs_title }) : null,
+        subprojectTabs(project),
+        artifactGrid(project),
+      ],
     },
     {
       id: 'insights',
@@ -1022,14 +1305,16 @@ function caseSections(site, project) {
       id: 'links',
       title: 'Links',
       content: [
+        project.request && !isTodo(project.request.intro) ? el('p', { class: 'case-intro', text: project.request.intro }) : null,
         el(
           'div',
           { class: 'link-row' },
           live ? externalLink(live, 'Live dashboard', 'btn btn--primary') : null,
-          github ? externalLink(github, 'GitHub repository', 'btn btn--secondary') : null,
+          github ? externalLink(github, 'GitHub repository', live ? 'btn btn--secondary' : 'btn btn--primary') : null,
+          requestButton(project, github || live ? 'btn btn--secondary' : 'btn btn--primary'),
           datasetUrl ? externalLink(datasetUrl, 'Dataset source', 'btn btn--secondary') : null
         ),
-        !github && !live ? pending('The GitHub repository and live dashboard links will be added when this project is published.') : null,
+        !github && !live && !project.request ? pending('The GitHub repository and live dashboard links will be added when this project is published.') : null,
       ],
     },
   ];
@@ -1080,7 +1365,15 @@ export function initProjectPage({ site, projects }) {
   const project = projects[index];
   updateCaseMeta(site, project);
 
-  const sections = caseSections(site, project);
+  // A project can choose its own section order with "section_order" (list of section ids).
+  let sections = caseSections(site, project);
+  if (Array.isArray(project.section_order) && project.section_order.length) {
+    const rank = (id) => {
+      const i = project.section_order.indexOf(id);
+      return i === -1 ? 999 : i;
+    };
+    sections = [...sections].sort((a, b) => rank(a.id) - rank(b.id));
+  }
   const sectionNodes = sections.map((section) =>
     el('section', { class: 'case-section', id: section.id, 'aria-labelledby': `${section.id}-title` }, el('h2', { id: `${section.id}-title`, text: section.title }), ...section.content)
   );
@@ -1099,7 +1392,8 @@ export function initProjectPage({ site, projects }) {
       'article',
       { class: 'case' },
       caseHeader(site, project),
-      cover ? el('div', { class: 'wrap' }, el('figure', { class: 'case__cover' }, cover)) : null,
+      highlightStrip(project),
+      cover && !project.hide_cover ? el('div', { class: 'wrap' }, el('figure', { class: 'case__cover' }, cover)) : null,
       el('div', { class: 'wrap case__layout' }, toc, el('div', { class: 'case__content' }, sectionNodes)),
       projects.length > 1
         ? el(

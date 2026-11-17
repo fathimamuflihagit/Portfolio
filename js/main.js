@@ -918,7 +918,7 @@ function renderNotes(site) {
 
 const shortUrl = (url) => url.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '');
 
-function renderContact(site) {
+function renderContact(site, projects) {
   const host = $('#contact-links');
   const links = site.links || {};
   const email = isTodo(links.email) ? '' : links.email.trim();
@@ -957,6 +957,18 @@ function renderContact(site) {
   const form = $('#contact-form');
   const status = $('#form-status');
   if (!form || !status) return;
+
+  // Arriving from a project's "Ask about this project" button: fill in the question.
+  const params = new URLSearchParams(window.location.search);
+  const about = projects.find((project) => project.id === params.get('about'));
+  const message = $('#cf-message');
+  if (about && message && !message.value) {
+    message.value = isTodo(about.request?.message) ? `Hi ${site.person?.first_name || ''}, I'd like to know more about your ${about.title} project.`.replace('Hi ,', 'Hi,') : about.request.message;
+    params.delete('about');
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+    window.setTimeout(() => $('#cf-name')?.focus({ preventScroll: true }), 400);
+  }
 
   const formspreeId = /^[a-z0-9]+$/i.test(site.site?.formspree_id || '') ? site.site.formspree_id : '';
   const setStatus = (state, ...content) => {
@@ -1215,7 +1227,7 @@ function initHome(data) {
   renderJourney(site);
   renderCertifications(site);
   renderNotes(site);
-  renderContact(site);
+  renderContact(site, projects);
   injectPersonSchema(site, projects);
   initNavSpy();
   initHeroCanvas();

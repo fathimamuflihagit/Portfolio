@@ -1,13 +1,567 @@
 {
   "_readme": "One entry per project. To add a project, copy an existing entry, give it a new unique id, and edit the text. No HTML changes are needed. Any text that starts with 'TODO:' shows as 'coming soon' on the site until you replace it. status must be Completed, In progress or Planned. Tool names must match the names in data/site.json (skills). See the README for the full field guide.",
-
   "projects": [
+    {
+      "id": "corner-cup-store-performance",
+      "title": "Coffee Chain Store Performance Analysis",
+      "tagline": "Why do some of a coffee chain's 12 shops earn four times more than others? Descriptive statistics, correlation, regression and probability, across Excel, Python and R.",
+      "role_tags": [
+        "Data",
+        "BI",
+        "Business Analyst"
+      ],
+      "tools": [
+        "Excel",
+        "Python",
+        "R"
+      ],
+      "course_code": "",
+      "context": "Statistics course project, Sheridan College (November 2026)",
+      "status": "Completed",
+      "dataset": {
+        "name": "The Corner Cup store data (course case-study dataset)",
+        "url": "",
+        "note": "A fictional chain of 12 coffee shops supplied for the course: location type, floor size, staff, daily customers, average spend per customer, monthly revenue and customer satisfaction. 12 rows and 8 columns, with no missing values."
+      },
+      "cover_image": "assets/img/projects/corner-cup-store-performance.webp",
+      "cover_alt": "Scatter plot of the 12 shops with a rising regression line",
+      "hide_cover": true,
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "request": {
+        "label": "Request the project files",
+        "intro": "The Excel workbook, Python notebook, R script and full written report are available on request.",
+        "message": "Hi Fathima, I'd like to see more of your coffee chain store performance analysis (the Excel workbook, Python notebook and R script). Could you share them?"
+      },
+      "business_problem": "The owner of The Corner Cup runs 12 coffee shops, 7 in the city and 5 in the suburbs, and has big decisions ahead: which shops to grow, which need help, and where to open next. Revenue ranges from $32.3K to $131K a month. The question was what actually drives that gap, and what she should do about it.",
+      "highlights": [
+        {
+          "value": "r = 0.88",
+          "label": "Daily customers and revenue",
+          "note": "The strongest link in the data"
+        },
+        {
+          "value": "77%",
+          "label": "Of revenue differences explained",
+          "note": "Regression on daily customers, R² = 0.77, p < 0.001"
+        },
+        {
+          "value": "+$276",
+          "label": "Monthly revenue per extra daily customer",
+          "note": "Regression slope"
+        },
+        {
+          "value": "p = 0.071",
+          "label": "Urban vs suburban revenue gap",
+          "note": "Not statistically significant"
+        }
+      ],
+      "approach": [
+        "Excel: frequency table, summary statistics and coefficient of variation, then an urban vs suburban comparison with a two-sample t-test.",
+        "Python: loaded and checked the data with pandas, built a histogram, scatter plot and box plot, and a correlation matrix with a heat map.",
+        "R: fitted a simple linear regression of revenue on daily customers, predicted revenue for a new 300-customer shop, and answered planning questions with the binomial and Poisson distributions.",
+        "Turned the results into three recommendations for the owner, each with its evidence and a concrete action."
+      ],
+      "visuals_title": "Results and visuals",
+      "visuals_intro": "Hover over any chart to see each shop's numbers, or switch to the table view. All values are calculated from the 12-shop dataset.",
+      "charts": [
+        {
+          "type": "scatter",
+          "title": "Daily customers vs monthly revenue",
+          "x_title": "Daily customers",
+          "y_title": "Monthly revenue",
+          "x_short": "customers a day",
+          "y_short": "a month",
+          "prefix": "$",
+          "unit": "K",
+          "point_title": "Shop",
+          "series_title": "Location",
+          "series": [
+            {
+              "name": "Urban",
+              "points": [
+                {
+                  "x": 312,
+                  "y": 78.9,
+                  "label": "Downtown Core"
+                },
+                {
+                  "x": 278,
+                  "y": 77.0,
+                  "label": "Westside Plaza"
+                },
+                {
+                  "x": 441,
+                  "y": 91.4,
+                  "label": "Airport Terminal",
+                  "callout": true
+                },
+                {
+                  "x": 302,
+                  "y": 95.5,
+                  "label": "Midtown Mall"
+                },
+                {
+                  "x": 388,
+                  "y": 131.0,
+                  "label": "Harbour View",
+                  "callout": true
+                },
+                {
+                  "x": 267,
+                  "y": 61.0,
+                  "label": "College Street"
+                },
+                {
+                  "x": 198,
+                  "y": 48.3,
+                  "label": "Old Town Square"
+                }
+              ]
+            },
+            {
+              "name": "Suburban",
+              "points": [
+                {
+                  "x": 195,
+                  "y": 45.6,
+                  "label": "University Ave"
+                },
+                {
+                  "x": 168,
+                  "y": 44.0,
+                  "label": "Riverside Park"
+                },
+                {
+                  "x": 149,
+                  "y": 32.3,
+                  "label": "Eastgate Centre",
+                  "callout": true
+                },
+                {
+                  "x": 221,
+                  "y": 65.1,
+                  "label": "North Hills"
+                },
+                {
+                  "x": 310,
+                  "y": 87.7,
+                  "label": "Tech Campus",
+                  "callout": true
+                }
+              ]
+            }
+          ],
+          "trendline": {
+            "slope": 0.276,
+            "intercept": -2.785,
+            "name": "Regression line (R² = 0.77)"
+          },
+          "wide": true,
+          "size": "tall",
+          "caption": "Busier shops earn more: each point is a shop and the dashed line is the regression fit. Airport Terminal (441 customers a day) sits about $27.5K below the line because its customers spend the least, while suburban Tech Campus earns more than most city shops."
+        },
+        {
+          "type": "bar",
+          "horizontal": true,
+          "size": "tall",
+          "title": "Monthly revenue by shop",
+          "labels": [
+            "Harbour View",
+            "Midtown Mall",
+            "Airport Terminal",
+            "Tech Campus",
+            "Downtown Core",
+            "Westside Plaza",
+            "North Hills",
+            "College Street",
+            "Old Town Square",
+            "University Ave",
+            "Riverside Park",
+            "Eastgate Centre"
+          ],
+          "groups": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "group_names": [
+            "Urban",
+            "Suburban"
+          ],
+          "group_title": "Location",
+          "category_title": "Shop",
+          "prefix": "$",
+          "unit": "K",
+          "series": [
+            {
+              "name": "Monthly revenue",
+              "values": [
+                131.0,
+                95.5,
+                91.4,
+                87.7,
+                78.9,
+                77.0,
+                65.1,
+                61.0,
+                48.3,
+                45.6,
+                44.0,
+                32.3
+              ]
+            }
+          ],
+          "caption": "Revenue ranges from $32.3K to $131K, about four times apart. Only 4 of the 12 shops earn more than $80K a month."
+        },
+        {
+          "type": "bar",
+          "horizontal": true,
+          "size": "tall",
+          "decimals": 2,
+          "title": "What moves with revenue? (correlation, r)",
+          "labels": [
+            "Daily customers",
+            "Staff",
+            "Floor size",
+            "Average spend",
+            "Satisfaction"
+          ],
+          "highlight": 0,
+          "category_title": "Factor",
+          "series": [
+            {
+              "name": "Correlation with monthly revenue",
+              "values": [
+                0.877,
+                0.687,
+                0.675,
+                0.661,
+                0.6
+              ]
+            }
+          ],
+          "caption": "Foot traffic stands out. The other four factors move together (bigger, better-staffed shops with higher spend and happier customers) but bigger shops do not attract more customers. Correlation shows a link, not cause and effect."
+        }
+      ],
+      "comparison": {
+        "title": "Urban vs suburban shops (averages)",
+        "columns": [
+          "Urban (7 shops)",
+          "Suburban (5 shops)"
+        ],
+        "rows": [
+          {
+            "label": "Monthly revenue",
+            "values": [
+              "$83.3K",
+              "$54.9K"
+            ],
+            "bars": [
+              83.3,
+              54.9
+            ]
+          },
+          {
+            "label": "Daily customers",
+            "values": [
+              "312",
+              "209"
+            ],
+            "bars": [
+              312.3,
+              208.6
+            ]
+          },
+          {
+            "label": "Spend per customer",
+            "values": [
+              "$8.84",
+              "$8.58"
+            ],
+            "bars": [
+              8.84,
+              8.58
+            ]
+          },
+          {
+            "label": "Satisfaction (out of 5)",
+            "values": [
+              "4.04",
+              "4.02"
+            ],
+            "bars": [
+              4.04,
+              4.02
+            ]
+          }
+        ],
+        "note": "City shops earn more because they are busier, not because customers spend more or are happier. The revenue gap is not statistically significant (Welch t-test, p = 0.071), so location type alone does not decide success."
+      },
+      "tabs_title": "How it was done, tool by tool",
+      "subprojects": [
+        {
+          "title": "Excel: describe the data",
+          "tool": "Excel",
+          "description": "Descriptive statistics in an Excel workbook, built with formulas so every number can be traced.",
+          "steps": [
+            "COUNTIF frequency table and bar chart of urban and suburban shops (7 and 5)",
+            "AVERAGE, MEDIAN, STDEV.S, MIN and MAX, plus the coefficient of variation to compare spread across units",
+            "AVERAGEIF group averages and a two-tailed T.TEST for the urban vs suburban revenue gap"
+          ],
+          "chart": {
+            "type": "bar",
+            "horizontal": true,
+            "size": "short",
+            "highlight": 0,
+            "title": "How much each measure varies (coefficient of variation)",
+            "unit": "%",
+            "labels": [
+              "Monthly revenue",
+              "Daily customers",
+              "Spend per customer",
+              "Satisfaction"
+            ],
+            "series": [
+              {
+                "name": "Coefficient of variation",
+                "values": [
+                  38.9,
+                  32.8,
+                  15.2,
+                  8.5
+                ]
+              }
+            ]
+          },
+          "embed_url": "",
+          "image": "",
+          "key_insight": "Revenue and daily customers vary a lot from shop to shop, while spend per customer and satisfaction stay fairly steady. That pointed to foot traffic as the main source of the revenue gap."
+        },
+        {
+          "title": "Python: visualise and correlate",
+          "tool": "Python",
+          "description": "Exploration and charts in a Python notebook with pandas and matplotlib.",
+          "steps": [
+            "Loaded the CSV with pandas and checked it with head(), info() and describe(); results matched Excel",
+            "Histogram of revenue, scatter plot of customers vs revenue by location, and box plot of satisfaction",
+            "Correlation matrix with data.corr() and a heat map"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "title": "Distribution of monthly revenue (6 bins)",
+            "labels": [
+              "$32–49K",
+              "$49–65K",
+              "$65–82K",
+              "$82–98K",
+              "$98–115K",
+              "$115–131K"
+            ],
+            "category_title": "Revenue range",
+            "series": [
+              {
+                "name": "Number of shops",
+                "values": [
+                  4,
+                  2,
+                  2,
+                  3,
+                  0,
+                  1
+                ]
+              }
+            ],
+            "decimals": 0
+          },
+          "embed_url": "",
+          "image": "",
+          "key_insight": "Revenue is slightly right-skewed (skewness 0.63): most shops earn $32K to $98K and Harbour View stands alone at $131K. Daily customers correlate with revenue at r = 0.88, far more than any other factor."
+        },
+        {
+          "title": "R: regression and probability",
+          "tool": "R",
+          "description": "Modelling and probability questions in an R script, run in RStudio.",
+          "steps": [
+            "lm(Monthly_Revenue_000 ~ Daily_Customers): Revenue ($000) = −2.785 + 0.276 × Daily customers, R² = 0.768",
+            "Predicted a new 300-customer shop at about $80.0K a month (95% prediction interval $47.3K to $112.7K)",
+            "Binomial model for 5 new suburban shops (40% chance each of becoming high-revenue) and a Poisson model of Airport Terminal arrivals (18 an hour)"
+          ],
+          "chart": {
+            "type": "bar",
+            "size": "short",
+            "highlight": 2,
+            "unit": "%",
+            "decimals": 1,
+            "title": "Of 5 new shops, how many become high-revenue? (binomial, p = 0.4)",
+            "labels": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "category_title": "High-revenue shops",
+            "series": [
+              {
+                "name": "Probability",
+                "values": [
+                  7.8,
+                  25.9,
+                  34.6,
+                  23.0,
+                  7.7,
+                  1.0
+                ]
+              }
+            ]
+          },
+          "embed_url": "",
+          "image": "",
+          "key_insight": "About 2 of 5 new suburban shops should do well, with a 92.2% chance that at least one does and a 7.8% chance that none do. At the airport, a rush of 25 or more customers an hour happens about 6.8% of the time, roughly 1.6 hours a day."
+        }
+      ],
+      "chart": {
+        "type": "scatter",
+        "title": "Daily customers vs monthly revenue",
+        "x_title": "Daily customers",
+        "y_title": "Monthly revenue",
+        "x_short": "customers a day",
+        "y_short": "a month",
+        "prefix": "$",
+        "unit": "K",
+        "point_title": "Shop",
+        "series_title": "Location",
+        "series": [
+          {
+            "name": "Urban",
+            "points": [
+              {
+                "x": 312,
+                "y": 78.9,
+                "label": "Downtown Core"
+              },
+              {
+                "x": 278,
+                "y": 77.0,
+                "label": "Westside Plaza"
+              },
+              {
+                "x": 441,
+                "y": 91.4,
+                "label": "Airport Terminal"
+              },
+              {
+                "x": 302,
+                "y": 95.5,
+                "label": "Midtown Mall"
+              },
+              {
+                "x": 388,
+                "y": 131.0,
+                "label": "Harbour View"
+              },
+              {
+                "x": 267,
+                "y": 61.0,
+                "label": "College Street"
+              },
+              {
+                "x": 198,
+                "y": 48.3,
+                "label": "Old Town Square"
+              }
+            ]
+          },
+          {
+            "name": "Suburban",
+            "points": [
+              {
+                "x": 195,
+                "y": 45.6,
+                "label": "University Ave"
+              },
+              {
+                "x": 168,
+                "y": 44.0,
+                "label": "Riverside Park"
+              },
+              {
+                "x": 149,
+                "y": 32.3,
+                "label": "Eastgate Centre"
+              },
+              {
+                "x": 221,
+                "y": 65.1,
+                "label": "North Hills"
+              },
+              {
+                "x": 310,
+                "y": 87.7,
+                "label": "Tech Campus"
+              }
+            ]
+          }
+        ],
+        "trendline": {
+          "slope": 0.276,
+          "intercept": -2.785,
+          "name": "Regression line (R² = 0.77)"
+        }
+      },
+      "insights": [
+        "Foot traffic drives revenue: daily customers explain about 77% of the differences between shops (R² = 0.77), and each extra customer a day adds about $276 a month.",
+        "City shops earn $83.3K a month against $54.9K in the suburbs, but mainly because they are busier. Spend and satisfaction are almost the same, and the gap is not statistically significant (p = 0.071).",
+        "Airport Terminal is the busiest shop (441 a day) but has the lowest spend ($6.90) and satisfaction (3.5), and earns about $27.5K less than the model predicts.",
+        "Only 4 of 12 shops earn more than $80K a month, so the chance that a shop is high-revenue is 1 in 3."
+      ],
+      "recommendations": [
+        "Choose new sites by foot traffic, not by the urban or suburban label. Count pedestrian traffic before signing a lease and aim for about 300 customers a day, the level the model links to an $80K shop.",
+        "Raise spend per customer at the Airport Terminal with combo deals and quick add-ons ($1 more per customer is about $13,000 a month), and add staff for the 25-plus-customer peaks.",
+        "Open new suburban shops in stages: 2 or 3 high-traffic sites first, review after 6 to 12 months, then decide on the rest."
+      ],
+      "improvements": [
+        "With only 12 shops at one point in time, every estimate has wide uncertainty. Monthly data over a year would show trends and seasonality.",
+        "A multiple regression with daily customers and spend per customer together would likely explain much of the remaining 23%.",
+        "An interactive Power BI dashboard would let the owner explore each shop herself."
+      ],
+      "section_order": [
+        "problem",
+        "visuals",
+        "insights",
+        "recommendations",
+        "approach",
+        "tools",
+        "dataset",
+        "next",
+        "links"
+      ]
+    },
     {
       "id": "retail-sales-dashboard",
       "title": "Retail Sales Performance Dashboard",
       "tagline": "From raw order lines to a regional KPI dashboard a sales manager could open on Monday morning.",
-      "role_tags": ["BI"],
-      "tools": ["MySQL", "Excel", "Power BI"],
+      "role_tags": [
+        "BI"
+      ],
+      "tools": [
+        "MySQL",
+        "Excel",
+        "Power BI"
+      ],
       "course_code": "INFO51486",
       "status": "In progress",
       "dataset": {
@@ -55,8 +609,23 @@
       "chart": {
         "type": "bar",
         "title": "Sales by region",
-        "labels": ["West", "East", "Central", "South"],
-        "series": [{ "name": "Sales (index)", "values": [80, 70, 55, 40] }],
+        "labels": [
+          "West",
+          "East",
+          "Central",
+          "South"
+        ],
+        "series": [
+          {
+            "name": "Sales (index)",
+            "values": [
+              80,
+              70,
+              55,
+              40
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -73,13 +642,19 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "customer-churn-analysis",
       "title": "Customer Churn Analysis",
       "tagline": "Which customers leave, and what do they have in common?",
-      "role_tags": ["Data", "AI"],
-      "tools": ["Python", "R", "Tableau"],
+      "role_tags": [
+        "Data",
+        "AI"
+      ],
+      "tools": [
+        "Python",
+        "R",
+        "Tableau"
+      ],
       "course_code": "MATH54937",
       "status": "In progress",
       "dataset": {
@@ -128,8 +703,21 @@
         "type": "bar",
         "title": "Churn rate by contract type",
         "unit": "%",
-        "labels": ["Month-to-month", "One year", "Two year"],
-        "series": [{ "name": "Churn rate", "values": [30, 20, 10] }],
+        "labels": [
+          "Month-to-month",
+          "One year",
+          "Two year"
+        ],
+        "series": [
+          {
+            "name": "Churn rate",
+            "values": [
+              30,
+              20,
+              10
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -146,13 +734,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "marketing-campaign-roi",
       "title": "Marketing Campaign ROI",
       "tagline": "Did the ad campaign work, and was the difference real or just noise?",
-      "role_tags": ["Marketing"],
-      "tools": ["Python", "Excel", "Tableau"],
+      "role_tags": [
+        "Marketing"
+      ],
+      "tools": [
+        "Python",
+        "Excel",
+        "Tableau"
+      ],
       "course_code": "MATH54937",
       "status": "Planned",
       "dataset": {
@@ -161,7 +754,7 @@
         "note": "User-level results of an experiment where one group saw ads and a control group saw a public service announcement, with a conversion flag and ad exposure by day and hour."
       },
       "cover_image": "assets/img/projects/marketing-campaign-roi.webp",
-      "featured": true,
+      "featured": false,
       "github_url": "",
       "live_dashboard_url": "",
       "business_problem": "A marketing team ran an ad campaign with a control group. They need to know whether the ads raised conversions, how confident they can be in that result, and when ads were most effective.",
@@ -201,10 +794,40 @@
         "type": "line",
         "title": "Conversion rate by day of week",
         "unit": "%",
-        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "labels": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ],
         "series": [
-          { "name": "Ad group", "values": [3.0, 3.2, 2.9, 2.7, 2.8, 2.6, 3.1] },
-          { "name": "Control group", "values": [2.0, 2.1, 1.9, 1.8, 1.9, 1.7, 2.0] }
+          {
+            "name": "Ad group",
+            "values": [
+              3.0,
+              3.2,
+              2.9,
+              2.7,
+              2.8,
+              2.6,
+              3.1
+            ]
+          },
+          {
+            "name": "Control group",
+            "values": [
+              2.0,
+              2.1,
+              1.9,
+              1.8,
+              1.9,
+              1.7,
+              2.0
+            ]
+          }
         ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
@@ -221,13 +844,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "stock-portfolio-tracker",
       "title": "Stock Portfolio Tracker",
       "tagline": "A small portfolio model that shows return, risk and what-if scenarios in one view.",
-      "role_tags": ["Finance"],
-      "tools": ["Excel", "Python", "Power BI"],
+      "role_tags": [
+        "Finance"
+      ],
+      "tools": [
+        "Excel",
+        "Python",
+        "Power BI"
+      ],
       "course_code": "INFO57747",
       "status": "Planned",
       "dataset": {
@@ -275,8 +903,39 @@
       "chart": {
         "type": "line",
         "title": "Portfolio value, indexed to 100",
-        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        "series": [{ "name": "Portfolio value (index)", "values": [100, 102, 101, 104, 103, 106, 108, 107, 110, 109, 112, 114] }],
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "series": [
+          {
+            "name": "Portfolio value (index)",
+            "values": [
+              100,
+              102,
+              101,
+              104,
+              103,
+              106,
+              108,
+              107,
+              110,
+              109,
+              112,
+              114
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -291,13 +950,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "ttc-bus-delays",
       "title": "Toronto Open Data: TTC Bus Delays",
       "tagline": "When and where do TTC buses run late, and why?",
-      "role_tags": ["Data"],
-      "tools": ["MySQL", "Python", "Tableau"],
+      "role_tags": [
+        "Data"
+      ],
+      "tools": [
+        "MySQL",
+        "Python",
+        "Tableau"
+      ],
       "course_code": "DBAS56663",
       "status": "Planned",
       "dataset": {
@@ -345,8 +1009,29 @@
       "chart": {
         "type": "bar",
         "title": "Delay incidents by day of week",
-        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        "series": [{ "name": "Incidents (index)", "values": [70, 75, 80, 80, 85, 50, 40] }],
+        "labels": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ],
+        "series": [
+          {
+            "name": "Incidents (index)",
+            "values": [
+              70,
+              75,
+              80,
+              80,
+              85,
+              50,
+              40
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -361,13 +1046,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "hr-attrition-analytics",
       "title": "HR Attrition & Workforce Analytics",
       "tagline": "Who is leaving, from which teams, and what does the data suggest about why?",
-      "role_tags": ["Operations & HR", "BI"],
-      "tools": ["Excel", "Power BI"],
+      "role_tags": [
+        "Operations & HR",
+        "BI"
+      ],
+      "tools": [
+        "Excel",
+        "Power BI"
+      ],
       "course_code": "",
       "status": "Planned",
       "dataset": {
@@ -416,8 +1106,21 @@
         "type": "bar",
         "title": "Attrition rate by department",
         "unit": "%",
-        "labels": ["Sales", "Research & Development", "Human Resources"],
-        "series": [{ "name": "Attrition rate", "values": [20, 15, 18] }],
+        "labels": [
+          "Sales",
+          "Research & Development",
+          "Human Resources"
+        ],
+        "series": [
+          {
+            "name": "Attrition rate",
+            "values": [
+              20,
+              15,
+              18
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -432,13 +1135,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "delivery-performance",
       "title": "Supply Chain Delivery Performance",
       "tagline": "How often do orders arrive on time, and where do the delays build up?",
-      "role_tags": ["Operations & HR", "Data"],
-      "tools": ["Excel", "Tableau"],
+      "role_tags": [
+        "Operations & HR",
+        "Data"
+      ],
+      "tools": [
+        "Excel",
+        "Tableau"
+      ],
       "course_code": "",
       "status": "Planned",
       "dataset": {
@@ -479,8 +1187,39 @@
         "type": "line",
         "title": "On-time delivery rate by month",
         "unit": "%",
-        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        "series": [{ "name": "On-time rate", "values": [50, 52, 51, 53, 52, 54, 53, 55, 54, 53, 55, 56] }],
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "series": [
+          {
+            "name": "On-time rate",
+            "values": [
+              50,
+              52,
+              51,
+              53,
+              52,
+              54,
+              53,
+              55,
+              54,
+              53,
+              55,
+              56
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -495,13 +1234,17 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "ecommerce-database-design",
       "title": "E-commerce Database Design",
       "tagline": "A normalized MySQL schema, documented and tested against ten business questions.",
-      "role_tags": ["Business Analyst", "Data"],
-      "tools": ["MySQL"],
+      "role_tags": [
+        "Business Analyst",
+        "Data"
+      ],
+      "tools": [
+        "MySQL"
+      ],
       "course_code": "DBAS56663",
       "status": "In progress",
       "dataset": {
@@ -566,13 +1309,18 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "aws-data-pipeline",
       "title": "Cloud Data Pipeline on AWS",
       "tagline": "Raw files in S3, SQL in Athena and a dashboard on top: a small pipeline, end to end.",
-      "role_tags": ["AI", "Data"],
-      "tools": ["AWS", "Power BI"],
+      "role_tags": [
+        "AI",
+        "Data"
+      ],
+      "tools": [
+        "AWS",
+        "Power BI"
+      ],
       "course_code": "INFO50954",
       "status": "Planned",
       "dataset": {
@@ -620,8 +1368,27 @@
       "chart": {
         "type": "line",
         "title": "Trips per month",
-        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        "series": [{ "name": "Trips (index)", "values": [100, 95, 105, 110, 108, 112] }],
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun"
+        ],
+        "series": [
+          {
+            "name": "Trips (index)",
+            "values": [
+              100,
+              95,
+              105,
+              110,
+              108,
+              112
+            ]
+          }
+        ],
         "sample": true,
         "_todo": "TODO: replace the values with real numbers from your analysis, then set sample to false."
       },
@@ -636,13 +1403,17 @@
         "TODO: what you would do differently or add with more time."
       ]
     },
-
     {
       "id": "project-management-case-study",
       "title": "Project Management Case Study",
       "tagline": "Planning the Retail Sales Dashboard as a real project: scope, schedule, risks and KPIs.",
-      "role_tags": ["Business Analyst"],
-      "tools": ["MS Project", "Excel"],
+      "role_tags": [
+        "Business Analyst"
+      ],
+      "tools": [
+        "MS Project",
+        "Excel"
+      ],
       "course_code": "MGMT51463",
       "status": "In progress",
       "dataset": {
@@ -697,12 +1468,42 @@
       ],
       "_artifacts_help": "Downloadable documents with previews. Save each file in assets/docs/ and a screenshot in assets/img/projects/, then fill in file and preview_image. Items with an empty file show as 'Coming soon'.",
       "artifacts": [
-        { "title": "Project charter", "description": "Purpose, scope, deliverables and success criteria.", "file": "", "preview_image": "" },
-        { "title": "Work breakdown structure", "description": "The work, broken into manageable packages.", "file": "", "preview_image": "" },
-        { "title": "Gantt chart (MS Project)", "description": "Schedule, dependencies and critical path.", "file": "", "preview_image": "" },
-        { "title": "Risk register", "description": "Risks with likelihood, impact and responses.", "file": "", "preview_image": "" },
-        { "title": "Stakeholder map", "description": "Who is involved and how to keep them informed.", "file": "", "preview_image": "" },
-        { "title": "KPI scorecard", "description": "Targets and measures for project success.", "file": "", "preview_image": "" }
+        {
+          "title": "Project charter",
+          "description": "Purpose, scope, deliverables and success criteria.",
+          "file": "",
+          "preview_image": ""
+        },
+        {
+          "title": "Work breakdown structure",
+          "description": "The work, broken into manageable packages.",
+          "file": "",
+          "preview_image": ""
+        },
+        {
+          "title": "Gantt chart (MS Project)",
+          "description": "Schedule, dependencies and critical path.",
+          "file": "",
+          "preview_image": ""
+        },
+        {
+          "title": "Risk register",
+          "description": "Risks with likelihood, impact and responses.",
+          "file": "",
+          "preview_image": ""
+        },
+        {
+          "title": "Stakeholder map",
+          "description": "Who is involved and how to keep them informed.",
+          "file": "",
+          "preview_image": ""
+        },
+        {
+          "title": "KPI scorecard",
+          "description": "Targets and measures for project success.",
+          "file": "",
+          "preview_image": ""
+        }
       ],
       "chart": null,
       "insights": [
