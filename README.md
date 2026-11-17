@@ -222,7 +222,7 @@ The new project appears in the grid, the filters and the counters automatically.
 | `role_tags` | Which roles the project suits. Use the short tags from `role_labels` in `site.json`: `BI`, `Data`, `Marketing`, `Finance`, `AI`, `Business Analyst`, `Operations & HR` |
 | `tools` | Tools used. Spell them exactly as in the skills list: `Excel`, `Python`, `R`, `MySQL`, `AWS`, `Power BI`, `Tableau`, `MS Project` |
 | `course_code` | The related course code, for example `DBAS56663`. Leave as `""` if there is none |
-| `status` | `Completed`, `In progress` or `Planned` |
+| `status` | `Completed`, `In progress` or `Planned`. The site lists projects in that order automatically; within each status they keep the order of this file |
 | `dataset` | `name`, `url` and a one-sentence `note`. Always link a real public dataset |
 | `cover_image` | Path to the cover image. Optional `cover_alt` describes it for screen readers |
 | `featured` | `true` shows the project in the large "Featured projects" rows |

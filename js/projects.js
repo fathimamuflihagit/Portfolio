@@ -147,9 +147,20 @@ export function observeReveals(root = document) {
 /* 2. Data loading ---------------------------------------------------------- */
 
 async function fetchJson(path) {
-  const response = await fetch(path);
+  // "no-cache" asks the server whether the file changed, so edits show up as soon as GitHub publishes them.
+  const response = await fetch(path, { cache: 'no-cache' });
   if (!response.ok) throw new Error(`Could not load ${path} (status ${response.status})`);
   return response.json();
+}
+
+// Completed projects first, then In progress, then Planned. Within each group the order in projects.json is kept.
+const STATUS_ORDER = ['completed', 'in-progress', 'planned'];
+function sortByStatus(projects) {
+  const rank = (project) => {
+    const i = STATUS_ORDER.indexOf(slug(project.status || ''));
+    return i === -1 ? STATUS_ORDER.length : i;
+  };
+  return projects.map((project, index) => ({ project, index })).sort((a, b) => rank(a.project) - rank(b.project) || a.index - b.index).map((entry) => entry.project);
 }
 
 let dataPromise;
@@ -158,7 +169,7 @@ export function loadData() {
   if (!dataPromise) {
     dataPromise = Promise.all([fetchJson('data/site.json'), fetchJson('data/projects.json')]).then(([site, file]) => ({
       site,
-      projects: Array.isArray(file.projects) ? file.projects : [],
+      projects: sortByStatus(Array.isArray(file.projects) ? file.projects : []),
     }));
   }
   return dataPromise;

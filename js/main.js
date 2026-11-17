@@ -872,7 +872,7 @@ function renderNotes(site) {
     window.history.replaceState(null, '', `#note/${encodeURIComponent(note.slug)}`);
     try {
       if (!cache.has(note.slug)) {
-        const response = await fetch(safeUrl(note.file));
+        const response = await fetch(safeUrl(note.file), { cache: 'no-cache' });
         if (!response.ok) throw new Error(String(response.status));
         cache.set(note.slug, await response.text());
       }
