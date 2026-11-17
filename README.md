@@ -240,6 +240,8 @@ The new project appears in the grid, the filters and the counters automatically.
 | `request` | Optional. Adds a button that opens the contact form with a question about this project already filled in |
 | `section_order` | Optional. The order of the case-study sections, for example results first for a finished project |
 | `hide_cover` | Optional. `true` keeps the cover image on cards but hides it on the case-study page |
+| `hide_sections` | Optional. Section ids to leave out of the case-study page, for example `["dataset", "approach"]` |
+| `story` | Optional. A told-as-a-story walkthrough shown first on the case-study page, with an "In plain words / Under the hood" switch. See "Story blocks" below |
 
 ### Subprojects (the tabs)
 
@@ -485,3 +487,25 @@ project-name/
 - Charts: [Chart.js](https://www.chartjs.org/) (MIT licence), loaded from the jsDelivr CDN.
 - Tool logos (Python, R): [Simple Icons](https://simpleicons.org/) (CC0), stored in `assets/img/icons/`. Tools without a Simple Icons logo show a letter tile in the brand colour. Brand names and colours belong to their owners.
 - Datasets belong to their publishers and are linked from each project page.
+
+
+## Story blocks
+
+A project can tell its case study as a story (see `retailco-aws-analytics-architecture` in `data/projects.json`). Add `"story": { "title": "...", "blocks": [ ... ] }` and put `"story"` in `section_order`. The blocks are drawn by `js/story.js`.
+
+Any text in a block can be one string, or two versions: `{ "plain": "for anyone", "tech": "for technical readers" }`. Visitors pick which one they read with the switch at the top of the story, and the choice is remembered.
+
+| Block `type` | What it shows | Main fields |
+|---|---|---|
+| `chapter` | A numbered chapter | `number`, `kicker`, `title`, `text`, optional `stats` (value + label), `chips` (icon + text), `visual` (`{"kind": "files"}`: stores sending files into one place) |
+| `flow` | An animated, clickable step-by-step journey with a play button | `title`, `intro`, `steps` (`n`, `icon`, `name`, `service`, `text`), `region` (`from`, `to`, `label`: the steps inside the dashed frame), `guard` (a security bar under the steps) |
+| `decisions` | "Chose X over Y" cards | `items` (`chose`, `over`, `title`, `why`, optional `number` + `number_label`) |
+| `budget` | A cost gauge against a budget, a cost breakdown and an optional comparison | `currency`, `spend`, `limit`, `verdict`, `parts` (`name`, `value`), `parts_note`, `compare` |
+| `matrix` | A who-can-access-what table | `columns`, `rows` (`who`, `note`, `cells`: `true`, `false` or a short word such as `"Read"`) |
+| `split` | Two side-by-side columns | `columns` (two of `label`, `title`, `items`) |
+| `checklist` | Requirements, each ticked with how it was met | `items` (`need`, `how`) |
+| `evidence` | Original images that open full size | `items` (`image`, `alt`, `caption`, `wide`) |
+
+Icons available for `icon` fields: store, file, upload, bucket, gear, catalog, search, chart, people, shield, key, log, lock, maple, dollar, clock, check.
+
+Only put numbers in a story that come from your own work, and label estimates as estimates.

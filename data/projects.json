@@ -2,6 +2,705 @@
   "_readme": "One entry per project. To add a project, copy an existing entry, give it a new unique id, and edit the text. No HTML changes are needed. Any text that starts with 'TODO:' shows as 'coming soon' on the site until you replace it. status must be Completed, In progress or Planned. Tool names must match the names in data/site.json (skills). See the README for the full field guide.",
   "projects": [
     {
+      "id": "retailco-aws-analytics-architecture",
+      "title": "Serverless Sales Analytics on AWS for a 50-Store Retailer",
+      "tagline": "A secure, pay-per-use AWS design that turns 50 stores' nightly sales files into one searchable history and weekly dashboards, for about CA$349 a month with all data kept in Canada.",
+      "role_tags": [
+        "Data",
+        "AI",
+        "Business Analyst"
+      ],
+      "tools": [
+        "AWS"
+      ],
+      "course_code": "INFO50954",
+      "context": "Cloud architecture business case, Sheridan College (October 2026)",
+      "status": "Completed",
+      "dataset": {
+        "name": "RetailCo case scenario (course brief)",
+        "url": "",
+        "note": "A fictional Canadian retailer described in the assignment brief: 50 stores, about 500 MB of point-of-sale CSV files a day, about 550 GB over three years. This project is a design and cost plan; it was not deployed."
+      },
+      "cover_image": "assets/img/projects/retailco-aws-analytics-architecture.webp",
+      "cover_alt": "Fifty store dots feeding a numbered pipeline inside a dashed Canada region frame, ending in a dashboard",
+      "hide_cover": true,
+      "featured": true,
+      "github_url": "",
+      "live_dashboard_url": "",
+      "request": {
+        "label": "Request the full business case",
+        "intro": "The full 8-page business case, the draw.io architecture diagram and the AWS Pricing Calculator estimate are available on request.",
+        "message": "Hi Fathima, I'd like to see the full business case for your RetailCo AWS analytics architecture (diagram, service choices and cost estimate). Could you send it over?"
+      },
+      "business_problem": "RetailCo, a Canadian retailer with 50 stores in Ontario and British Columbia, gets about 500 MB of sales files from its tills every day, but they sit as separate daily exports. There is no single place to keep three years of history or to look at all stores together, and customer data has to stay private and in Canada.",
+      "highlights": [
+        {
+          "value": "CA$349",
+          "label": "A month to run",
+          "note": "30% under the CA$500 budget, in year 3"
+        },
+        {
+          "value": "550 GB",
+          "label": "Three years of sales",
+          "note": "From 50 stores, searchable any time"
+        },
+        {
+          "value": "0",
+          "label": "Servers to manage",
+          "note": "Every service is pay-per-use"
+        },
+        {
+          "value": "100%",
+          "label": "Data kept in Canada",
+          "note": "ca-central-1, for PIPEDA"
+        }
+      ],
+      "story": {
+        "title": "The story, step by step",
+        "switch_label": "Explain it",
+        "plain_label": "In plain words",
+        "tech_label": "Under the hood",
+        "switch_hint": "Switch any time: the whole page follows.",
+        "blocks": [
+          {
+            "type": "chapter",
+            "number": 1,
+            "kicker": "The problem",
+            "title": "50 stores, 50 files a night, and no one place to look",
+            "text": {
+              "plain": "Every night, each of RetailCo's 50 stores produces a file listing everything it sold. The files pile up separately, so nobody can easily ask simple questions like \"what sells best in each region?\" or see all stores side by side.",
+              "tech": "Each store's POS system exports one CSV a day: about 500 MB across the chain, about 180 GB a year and about 550 GB over three years. Usage is light (a few ad-hoc queries a day and one weekly dashboard), so an always-on warehouse would mostly be paying for idle time."
+            },
+            "stats": [
+              {
+                "value": "50",
+                "label": "stores in Ontario and BC"
+              },
+              {
+                "value": "~500 MB",
+                "label": {
+                  "plain": "of sales files every night",
+                  "tech": "of POS CSV a day"
+                }
+              },
+              {
+                "value": "~550 GB",
+                "label": {
+                  "plain": "of history over three years",
+                  "tech": "after three years (~180 GB a year)"
+                }
+              }
+            ],
+            "visual": {
+              "kind": "files",
+              "count": 50,
+              "from": "50 stores, one file each a night",
+              "to": "One secure sales history",
+              "alt": "Fifty store icons sending files into one shared store of sales history"
+            }
+          },
+          {
+            "type": "chapter",
+            "number": 2,
+            "kicker": "What success looks like",
+            "title": "Six things the solution had to do",
+            "text": {
+              "plain": "Before choosing any technology, I wrote down exactly what RetailCo needed. Every later decision was checked against this list.",
+              "tech": "Requirements from the brief, used as acceptance criteria for every service choice and for the cost model."
+            },
+            "chips": [
+              {
+                "icon": "clock",
+                "text": {
+                  "plain": "Keep 3 years of sales, ready any time",
+                  "tech": "3-year history with instant access"
+                }
+              },
+              {
+                "icon": "search",
+                "text": {
+                  "plain": "Let analysts ask their own questions",
+                  "tech": "Ad-hoc SQL: top products by region and store"
+                }
+              },
+              {
+                "icon": "chart",
+                "text": {
+                  "plain": "Weekly dashboards for store managers",
+                  "tech": "Weekly refreshed dashboards for 50 managers"
+                }
+              },
+              {
+                "icon": "dollar",
+                "text": {
+                  "plain": "Cost under CA$500 a month",
+                  "tech": "Run cost < CA$500 / month"
+                }
+              },
+              {
+                "icon": "maple",
+                "text": {
+                  "plain": "Keep customer data in Canada",
+                  "tech": "PIPEDA: data resident in ca-central-1"
+                }
+              },
+              {
+                "icon": "lock",
+                "text": {
+                  "plain": "Only approved analysts see raw data",
+                  "tech": "Least privilege: raw data for the analyst role only"
+                }
+              }
+            ]
+          },
+          {
+            "type": "flow",
+            "title": "Follow one night of sales data",
+            "intro": {
+              "plain": "Here is the journey a store's sales file takes, from the till to a manager's dashboard. Press play, or tap any step to read what happens there.",
+              "tech": "A serverless data lake in ca-central-1: S3 for storage, Glue for ETL and cataloguing, Athena for SQL, QuickSight for BI. Select a step for the service-level detail."
+            },
+            "region": {
+              "from": 1,
+              "to": 5,
+              "label": "Everything inside stays in Canada (ca-central-1)"
+            },
+            "steps": [
+              {
+                "n": 1,
+                "icon": "upload",
+                "name": "Upload",
+                "service": "AWS CLI over HTTPS",
+                "text": {
+                  "plain": "Every night, each store automatically sends that day's sales file to the cloud over a secure connection. The store can only drop off its own file; it can't read anything else.",
+                  "tech": "A scheduled AWS CLI job at each store uploads the day's CSV over HTTPS using an IAM role that can only PutObject into its own prefix, e.g. raw/year=2026/month=10/day=28/store=104/. AWS Transfer Family (SFTP) was rejected: about US$217 a month just to receive 50 small files."
+                }
+              },
+              {
+                "n": 2,
+                "icon": "bucket",
+                "name": "Store",
+                "service": "Amazon S3",
+                "text": {
+                  "plain": "The original files land in one secure storage space and are never changed, so there is always a permanent record to go back to.",
+                  "tech": "Files land in raw/ in a single S3 bucket (S3 Standard, versioning on, Block Public Access on). Raw objects are immutable and act as the system of record. S3 chosen over RDS: no always-on server, no loading step, and Athena reads files in place."
+                }
+              },
+              {
+                "n": 3,
+                "icon": "gear",
+                "name": "Clean",
+                "service": "AWS Glue ETL",
+                "text": {
+                  "plain": "Overnight, the files are tidied up, customer details are hidden, and the data is packed into a compact format that is much faster and cheaper to search.",
+                  "tech": "A nightly Glue ETL job (2 DPUs, ~15 min, ~US$6.60/month) casts types, masks customer identifiers and writes compressed Parquet to curated/, partitioned by year/month/day. Glue chosen over EMR: no cluster to size, start or stop for 500 MB a day."
+                }
+              },
+              {
+                "n": 4,
+                "icon": "catalog",
+                "name": "Catalogue",
+                "service": "AWS Glue Crawler + Data Catalog",
+                "text": {
+                  "plain": "A librarian-like step updates the index, so the new day's sales show up as soon as anyone searches.",
+                  "tech": "A Glue Crawler runs after the job, discovers the new partition and updates the Glue Data Catalog tables that Athena queries (10-minute minimum, ~US$2.20/month)."
+                }
+              },
+              {
+                "n": 5,
+                "icon": "search",
+                "name": "Ask",
+                "service": "Amazon Athena",
+                "text": {
+                  "plain": "Analysts type questions like \"top products by region\" and get answers in seconds. RetailCo pays only for each question asked, nothing while it sits idle.",
+                  "tech": "Analysts run standard SQL in Athena directly on the Parquet in S3; results go to athena-results/ in the same Region. ~US$5.50 per TB scanned in ca-central-1; partition pruning and columnar reads keep ~3 TB/month at US$16.34. Athena chosen over Redshift: no paying for idle hours."
+                }
+              },
+              {
+                "n": 6,
+                "icon": "chart",
+                "name": "Dashboards",
+                "service": "Amazon QuickSight",
+                "text": {
+                  "plain": "Once a week, a summary is loaded into ready-made dashboards that the three analysts design.",
+                  "tech": "QuickSight (ca-central-1) refreshes a weekly summary from Athena into SPICE. Three analysts are Authors on the yearly plan (US$18 each). Pro seats and Q&A were avoided because of the US$250/month account fee."
+                }
+              },
+              {
+                "n": 7,
+                "icon": "people",
+                "name": "View",
+                "service": "QuickSight Readers",
+                "text": {
+                  "plain": "The 50 store managers open their weekly dashboard. They see the summaries they need, but never the raw customer data.",
+                  "tech": "50 managers sign in as QuickSight Readers (US$3 each). They have no IAM identity and no access to S3 or Athena, so raw data stays limited to the analyst role."
+                }
+              }
+            ],
+            "guard": {
+              "label": {
+                "plain": "Step 8 · Protect: a security layer around every step",
+                "tech": "Step 8 · Protect: IAM, KMS and CloudTrail across every stage"
+              },
+              "items": [
+                {
+                  "icon": "lock",
+                  "name": "IAM",
+                  "text": {
+                    "plain": " decides who can do what",
+                    "tech": " roles with least privilege, no long-term keys"
+                  }
+                },
+                {
+                  "icon": "key",
+                  "name": "KMS",
+                  "text": {
+                    "plain": " holds the key that locks the data",
+                    "tech": " customer-managed key, SSE-KMS"
+                  }
+                },
+                {
+                  "icon": "log",
+                  "name": "CloudTrail",
+                  "text": {
+                    "plain": " keeps a log of every access",
+                    "tech": " logs S3 data events and key use"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "decisions",
+            "title": "The key decisions, and what I said no to",
+            "intro": {
+              "plain": "Good design is as much about what you leave out. For each part, I compared a popular option against a simpler, cheaper one that still met every need.",
+              "tech": "Each choice was traded off on cost at this workload size, operational overhead and the six requirements."
+            },
+            "items": [
+              {
+                "chose": "Athena",
+                "over": "Redshift",
+                "title": "Pay per question, not per hour",
+                "why": {
+                  "plain": "A data warehouse charges for every hour it's switched on, even overnight. RetailCo only asks a few questions a day, so paying per question is far cheaper.",
+                  "tech": "Redshift Serverless starts at 4 RPUs at US$0.375 per RPU-hour; for ~550 GB and occasional queries most of that is idle time. Athena bills ~US$5.50/TB scanned and nothing when idle."
+                },
+                "number": "US$16.34",
+                "number_label": {
+                  "plain": "a month for all the questions",
+                  "tech": "a month for ~3 TB scanned"
+                }
+              },
+              {
+                "chose": "Parquet",
+                "over": "Raw CSV",
+                "title": "Pack the data before searching it",
+                "why": {
+                  "plain": "Searching the raw files would mean reading everything every time. The packed format lets each question read only the bits it needs.",
+                  "tech": "Columnar, compressed Parquet with year/month/day partitions means Athena reads only the needed columns and partitions, instead of full-scanning ~550 GB of CSV per query."
+                }
+              },
+              {
+                "chose": "Glue",
+                "over": "EMR",
+                "title": "No machines to babysit",
+                "why": {
+                  "plain": "The alternative needs a cluster of machines to be sized, started and stopped. Glue just runs the job and bills by the second.",
+                  "tech": "EMR is a managed Spark cluster RetailCo would have to size and operate; overkill for 500 MB a day. Glue is serverless with per-second billing."
+                },
+                "number": "US$6.60",
+                "number_label": {
+                  "plain": "a month for the nightly clean-up",
+                  "tech": "a month: 2 DPUs × 15 min × 30"
+                }
+              },
+              {
+                "chose": "S3",
+                "over": "RDS",
+                "title": "Files stay files",
+                "why": {
+                  "plain": "The sales data is just files that arrive daily and are read in bulk. Simple file storage fits better than a database server running all day.",
+                  "tech": "RDS bills for an always-on instance and needs a load step. S3 bills for storage used; Athena queries the objects in place; versioning allows rollback of a bad upload."
+                }
+              },
+              {
+                "chose": "HTTPS upload",
+                "over": "SFTP service",
+                "title": "Don't spend half the budget on the front door",
+                "why": {
+                  "plain": "A dedicated file-transfer service would cost almost half the monthly budget just to receive 50 small files. A secure scheduled upload costs almost nothing.",
+                  "tech": "AWS Transfer Family is ~US$0.30/hour per endpoint (≈US$217/month). A scheduled AWS CLI upload over HTTPS with a scoped IAM role is near zero cost."
+                },
+                "number": "≈US$217",
+                "number_label": {
+                  "plain": "a month saved",
+                  "tech": "a month avoided"
+                }
+              },
+              {
+                "chose": "QuickSight",
+                "over": "Power BI / Tableau",
+                "title": "Dashboards that live next to the data",
+                "why": {
+                  "plain": "The dashboard tool sits inside AWS in Canada and connects straight to the data, with no extra licences or connectors.",
+                  "tech": "Native Athena connector, IAM integration and availability in ca-central-1. Readers US$3/month; Authors US$18 on a yearly plan. Power BI/Tableau need separate licences, a connector, and may process data outside AWS."
+                }
+              },
+              {
+                "chose": "S3 Standard",
+                "over": "Glacier",
+                "title": "History on tap, not in the archive",
+                "why": {
+                  "plain": "Archive storage is cheaper, but it can take hours to get data back. RetailCo needs its history available any time.",
+                  "tech": "Glacier retrieval can take hours, which breaks the any-time-access requirement. A later Lifecycle rule to Standard-IA after 90 days keeps access instant at lower cost."
+                }
+              },
+              {
+                "chose": "SSE-KMS",
+                "over": "SSE-S3",
+                "title": "A second lock on the data",
+                "why": {
+                  "plain": "With the stronger option, being allowed into the storage isn't enough: you also need permission to use the key, and every use is recorded.",
+                  "tech": "SSE-S3 is free but anyone with bucket read can read objects. SSE-KMS with a customer-managed key adds key-policy authorisation and CloudTrail logging of every decrypt."
+                }
+              },
+              {
+                "chose": "IAM roles",
+                "over": "IAM users",
+                "title": "No passwords lying around",
+                "why": {
+                  "plain": "Instead of permanent logins that can leak, every person and process gets short-lived access only when it's needed.",
+                  "tech": "Roles issue temporary credentials via STS; no long-lived access keys to rotate or leak. MFA required on the analyst role."
+                }
+              }
+            ]
+          },
+          {
+            "type": "budget",
+            "title": "Does it fit the budget?",
+            "intro": {
+              "plain": "I priced every part in the official AWS Pricing Calculator, sized for the most expensive point: year 3, when all three years of data are stored.",
+              "tech": "Estimate built in the AWS Pricing Calculator, all services in Canada (Central), sized for the year-3 worst case. Converted at USD 1.00 = CAD 1.40 (26 October 2026)."
+            },
+            "currency": "CA$",
+            "spend": 349,
+            "limit": 500,
+            "per": "a month, in year 3",
+            "verdict": {
+              "plain": "Yes: about CA$151 (30%) under the CA$500 limit.",
+              "tech": "US$248.94/month (US$2,987.28 a year) ≈ CA$348.52, CA$151 (30%) headroom."
+            },
+            "parts_title": "Where the money goes (US$ a month)",
+            "part_prefix": "$",
+            "parts": [
+              {
+                "name": "QuickSight",
+                "value": 204.0
+              },
+              {
+                "name": "Athena",
+                "value": 16.34
+              },
+              {
+                "name": "S3",
+                "value": 18.0
+              },
+              {
+                "name": "Glue",
+                "value": 8.8
+              },
+              {
+                "name": "KMS",
+                "value": 1.3
+              },
+              {
+                "name": "CloudTrail",
+                "value": 0.5
+              }
+            ],
+            "parts_note": {
+              "plain": "The biggest cost is dashboard seats for people, not data. Adding more managers is the main budget risk, so I'd set a spending alert at CA$400.",
+              "tech": "QuickSight seats are ~82% of the bill and scale with headcount, not data. Controls: Athena workgroup scan limits, S3 Lifecycle to Standard-IA after 90 days, and an AWS Budgets alert at CA$400."
+            },
+            "compare": {
+              "title": "Why packing the data matters (Athena, US$ a month)",
+              "items": [
+                {
+                  "label": {
+                    "plain": "Packed data (Parquet)",
+                    "tech": "Parquet + partitions (~3 TB scanned)"
+                  },
+                  "value": 16.34,
+                  "display": "$16"
+                },
+                {
+                  "label": {
+                    "plain": "Searching raw files",
+                    "tech": "Raw CSV, full 550 GB scan per query"
+                  },
+                  "value": 9075,
+                  "display": "≈$9,000"
+                }
+              ],
+              "note": {
+                "plain": "Same 100 questions a day. The raw-file figure is my rough estimate of what would happen without the clean-up step.",
+                "tech": "Same workload of 100 queries a day. Raw-CSV figure is an estimate: 3,000 queries × 0.55 TB × US$5.50/TB."
+              }
+            }
+          },
+          {
+            "type": "matrix",
+            "title": "Who can see what",
+            "intro": {
+              "plain": "Each person and each automated process gets only the access it needs. Store managers get their dashboards, and nothing else.",
+              "tech": "Four IAM roles, none with permanent keys, enforced by IAM policies, the S3 bucket policy and the KMS key policy."
+            },
+            "corner": "Who",
+            "columns": [
+              "Raw sales files",
+              "Cleaned data",
+              "Run SQL (Athena)",
+              "Dashboards"
+            ],
+            "rows": [
+              {
+                "who": "Store upload script",
+                "note": {
+                  "plain": "drops off files only",
+                  "tech": "PutObject to raw/ only"
+                },
+                "cells": [
+                  "Add only",
+                  false,
+                  false,
+                  false
+                ]
+              },
+              {
+                "who": "Nightly clean-up job",
+                "note": {
+                  "plain": "tidies the data",
+                  "tech": "Glue role"
+                },
+                "cells": [
+                  "Read",
+                  "Write",
+                  false,
+                  false
+                ]
+              },
+              {
+                "who": "Analysts (3)",
+                "note": {
+                  "plain": "with two-step sign-in",
+                  "tech": "MFA required"
+                },
+                "cells": [
+                  true,
+                  true,
+                  true,
+                  "Author"
+                ]
+              },
+              {
+                "who": "Dashboard service",
+                "note": {
+                  "plain": "builds the dashboards",
+                  "tech": "QuickSight role"
+                },
+                "cells": [
+                  false,
+                  "Read",
+                  false,
+                  true
+                ]
+              },
+              {
+                "who": "Store managers (50)",
+                "note": {
+                  "plain": "view only",
+                  "tech": "QuickSight Readers, no IAM"
+                },
+                "cells": [
+                  false,
+                  false,
+                  false,
+                  "View"
+                ]
+              }
+            ],
+            "note": {
+              "plain": "Extra locks: the storage refuses anything not sent securely or not encrypted, and is never public.",
+              "tech": "Bucket policy denies non-HTTPS requests and uploads not encrypted with SSE-KMS, restricts raw/ to the analyst and Glue roles; Block Public Access and versioning on."
+            }
+          },
+          {
+            "type": "split",
+            "title": "Who is responsible for security?",
+            "intro": {
+              "plain": "Moving to the cloud doesn't hand over all the security. AWS and RetailCo each have their own part.",
+              "tech": "The AWS Shared Responsibility Model, applied to this design."
+            },
+            "columns": [
+              {
+                "icon": "shield",
+                "label": "AWS",
+                "title": {
+                  "plain": "Security of the cloud",
+                  "tech": "Security OF the cloud"
+                },
+                "items": [
+                  {
+                    "plain": "The data centres in Canada",
+                    "tech": "Physical data centres in Canada (Central)"
+                  },
+                  {
+                    "plain": "The hardware and the network",
+                    "tech": "Hardware, network and virtualisation"
+                  },
+                  {
+                    "plain": "The machines that run the clean-up, search and dashboard services",
+                    "tech": "The managed infrastructure behind Glue, Athena and QuickSight"
+                  }
+                ]
+              },
+              {
+                "icon": "key",
+                "label": "RetailCo",
+                "title": {
+                  "plain": "Security in the cloud",
+                  "tech": "Security IN the cloud"
+                },
+                "items": [
+                  {
+                    "plain": "Choosing to keep everything in Canada",
+                    "tech": "Selecting ca-central-1 before any data is uploaded"
+                  },
+                  {
+                    "plain": "Writing the rules for who gets access",
+                    "tech": "IAM, bucket and key policies"
+                  },
+                  {
+                    "plain": "Turning on encryption and looking after the key",
+                    "tech": "SSE-KMS and customer-managed key lifecycle"
+                  },
+                  {
+                    "plain": "Deciding who counts as an approved analyst",
+                    "tech": "Identity governance for the analyst role"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "title": "Did it work? Every requirement, met",
+            "items": [
+              {
+                "need": "Three years of history, available any time",
+                "how": {
+                  "plain": "All files kept in instant-access storage, with a fast packed copy for searching.",
+                  "tech": "S3 Standard for all objects; Parquet copies keep query time flat as history grows."
+                }
+              },
+              {
+                "need": "Analysts can ask their own questions",
+                "how": {
+                  "plain": "Analysts type questions and get answers in seconds.",
+                  "tech": "Athena SQL over Glue Data Catalog tables; partitions and Parquet keep scans small."
+                }
+              },
+              {
+                "need": "Weekly dashboards for store managers",
+                "how": {
+                  "plain": "Dashboards refresh every week; managers just open them.",
+                  "tech": "QuickSight with weekly SPICE refresh from Athena; managers are Readers."
+                }
+              },
+              {
+                "need": "Under CA$500 a month",
+                "how": {
+                  "plain": "About CA$349 a month at the most expensive point.",
+                  "tech": "US$248.94 ≈ CA$348.52 per month in year 3; every service is pay-per-use."
+                }
+              },
+              {
+                "need": "Customer data stays in Canada (PIPEDA)",
+                "how": {
+                  "plain": "Everything, including search results and dashboards, is stored in Canada.",
+                  "tech": "All resources in ca-central-1, including athena-results/ and the QuickSight account; no cross-Region copies. Trade-offs accepted: ~10% higher Athena price and some QuickSight AI features unavailable."
+                }
+              },
+              {
+                "need": "Only approved analysts see raw data",
+                "how": {
+                  "plain": "Access rules, a separate key and an activity log protect the raw files.",
+                  "tech": "Least-privilege IAM roles, bucket policy, KMS key policy and CloudTrail data-event logging."
+                }
+              }
+            ]
+          },
+          {
+            "type": "evidence",
+            "title": "The original work",
+            "intro": {
+              "plain": "The architecture diagram I drew and the cost estimate I built. Open either one to see it full size.",
+              "tech": "Architecture diagram drawn in draw.io with the official AWS Architecture Icons, and the AWS Pricing Calculator estimate (28 October 2026)."
+            },
+            "items": [
+              {
+                "image": "assets/img/projects/retailco-aws-diagram.webp",
+                "alt": "AWS architecture diagram: stores upload to Amazon S3 in the Canada Central region; AWS Glue transforms and catalogues the data; Amazon Athena queries it; Amazon QuickSight serves dashboards to store managers; IAM, KMS and CloudTrail secure every stage. Numbered badges 1 to 8 mark the steps.",
+                "caption": "Architecture diagram, drawn in draw.io with the official AWS icons. Badges 1–8 match the steps above.",
+                "wide": true,
+                "width": 1612,
+                "height": 862
+              },
+              {
+                "image": "assets/img/projects/retailco-aws-pricing.webp",
+                "alt": "AWS Pricing Calculator estimate for six services in Canada (Central): monthly total US$248.94, 12-month total US$2,987.28.",
+                "caption": "AWS Pricing Calculator estimate: US$248.94 a month, all six services in Canada (Central).",
+                "wide": true
+              }
+            ]
+          }
+        ]
+      },
+      "insights": [
+        "For a small, occasionally used workload, serverless pay-per-use services beat always-on servers on both cost and effort: nothing runs, and nothing is billed, while no one is asking questions.",
+        "How the data is stored decides what queries cost: packing it into partitioned Parquet keeps Athena around US$16 a month instead of thousands.",
+        "The biggest cost is people, not data: QuickSight seats are about 82% of the bill, so headcount, not data growth, is the number to watch.",
+        "Keeping data in Canada has small, known trade-offs (about 10% higher Athena pricing and some QuickSight AI features unavailable), and they are worth it for PIPEDA."
+      ],
+      "recommendations": [
+        "Set an AWS Budgets alert at CA$400 so RetailCo is warned well before the CA$500 limit.",
+        "Add a per-query scan limit in the Athena workgroup so one careless query can't run up the bill.",
+        "Add an S3 Lifecycle rule to move raw files older than 90 days to S3 Standard-IA: cheaper, but still instant.",
+        "Review Amazon Redshift only if RetailCo grows to hundreds of daily dashboard users."
+      ],
+      "improvements": [
+        "Build a small proof of concept in the AWS Learner Lab with sample data, to measure real Glue run times and Athena scan sizes against the estimates.",
+        "Add data-quality checks to the nightly job (row counts, missing stores, duplicate files) with an alert when a store's file doesn't arrive.",
+        "Orchestrate the job and crawler with AWS Glue Workflows or Step Functions instead of separate schedules."
+      ],
+      "approach": [],
+      "section_order": [
+        "story",
+        "insights",
+        "recommendations",
+        "next",
+        "tools",
+        "links"
+      ],
+      "hide_sections": [
+        "problem",
+        "dataset",
+        "approach",
+        "visuals"
+      ]
+    },
+    {
       "id": "corner-cup-store-performance",
       "title": "Coffee Chain Store Performance Analysis",
       "tagline": "Why do some of a coffee chain's 12 shops earn four times more than others? Descriptive statistics, correlation, regression and probability, across Excel, Python and R.",

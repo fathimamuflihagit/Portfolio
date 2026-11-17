@@ -16,6 +16,8 @@
  * ---------------------------------------------------------------------------
  */
 
+import { renderStory } from './story.js';
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js';
 
@@ -1255,6 +1257,13 @@ function caseSections(site, project) {
   const approach = filled(project.approach);
 
   return [
+    project.story
+      ? {
+          id: 'story',
+          title: isTodo(project.story.title) ? 'The story' : project.story.title,
+          content: [renderStory(project.story)],
+        }
+      : null,
     {
       id: 'problem',
       title: 'Business problem',
@@ -1377,7 +1386,8 @@ export function initProjectPage({ site, projects }) {
   updateCaseMeta(site, project);
 
   // A project can choose its own section order with "section_order" (list of section ids).
-  let sections = caseSections(site, project);
+  const hidden = new Set(Array.isArray(project.hide_sections) ? project.hide_sections : []);
+  let sections = caseSections(site, project).filter((section) => section && !hidden.has(section.id));
   if (Array.isArray(project.section_order) && project.section_order.length) {
     const rank = (id) => {
       const i = project.section_order.indexOf(id);
