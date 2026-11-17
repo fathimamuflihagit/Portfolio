@@ -148,7 +148,7 @@ function initMenu() {
       button.focus();
     }
   });
-  window.matchMedia('(min-width: 56rem)').addEventListener('change', (event) => {
+  window.matchMedia('(min-width: 62rem)').addEventListener('change', (event) => {
     if (event.matches) setOpen(false);
   });
 }
@@ -1039,7 +1039,7 @@ function initNavSpy() {
   const links = $$('#nav-links a[href^="#"]');
   if (!links.length || !('IntersectionObserver' in window)) return;
   // Sections without their own menu item light up the nearest one.
-  const owner = { top: '', about: 'about', recruiters: 'about', skills: 'skills', featured: 'projects', projects: 'projects', process: 'projects', journey: 'journey', certifications: 'journey', notes: 'journey', contact: 'contact' };
+  const owner = { top: '', about: 'about', recruiters: 'about', skills: 'skills', featured: 'projects', projects: 'projects', process: 'projects', journey: 'journey', certifications: 'certifications', notes: 'certifications', contact: 'contact' };
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
