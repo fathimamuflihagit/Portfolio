@@ -32,7 +32,7 @@ import {
   refreshCharts,
 } from './projects.js';
 
-const SIMPLE_ICONS_URL = 'https://cdn.jsdelivr.net/npm/simple-icons@16.38.0/icons/';
+const SKILL_ICONS_PATH = 'assets/img/icons/'; // logos from Simple Icons (CC0), stored with the site
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -371,11 +371,11 @@ function renderRecruiterFacts(site) {
   }
 }
 
-/** Swap a chip's monogram for its Simple Icons glyph, if one exists. */
+/** Swap a chip's monogram for its logo, if a logo file exists. */
 async function loadSkillIcon(holder, iconSlug) {
-  if (!/^[a-z0-9_]+$/.test(iconSlug)) return;
+  if (!/^[a-z0-9_-]+$/.test(iconSlug)) return;
   try {
-    const response = await fetch(`${SIMPLE_ICONS_URL}${iconSlug}.svg`);
+    const response = await fetch(`${SKILL_ICONS_PATH}${iconSlug}.svg`);
     if (!response.ok) return;
     const doc = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
     const path = doc.querySelector('path');
@@ -389,24 +389,28 @@ async function loadSkillIcon(holder, iconSlug) {
     shape.setAttribute('d', d);
     svg.append(shape);
     holder.replaceChildren(svg);
+    holder.classList.add('has-logo');
   } catch (error) {
-    /* offline or blocked: the monogram stays */
+    /* missing file: the monogram stays */
   }
 }
+
+const isHexColor = (value) => typeof value === 'string' && /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(value.trim());
 
 function renderSkills(site, projects, grid) {
   const host = $('#skills-groups');
   if (!host) return;
   const counts = toolCounts(projects);
   const chips = new Map();
-  const iconJobs = [];
+  let order = 0;
 
   for (const group of site.skills?.groups || []) {
     const list = el('ul', { class: 'chip-list' });
     for (const tool of group.tools || []) {
       const count = counts.get(tool.name) || 0;
-      const holder = el('span', { class: 'skill-chip__icon', 'aria-hidden': 'true', text: tool.monogram || tool.name.slice(0, 2) });
-      if (tool.icon) iconJobs.push(() => loadSkillIcon(holder, tool.icon));
+      const monogram = tool.monogram || tool.name.slice(0, 2);
+      const holder = el('span', { class: `skill-chip__icon${monogram.length > 2 ? ' is-long' : ''}`, 'aria-hidden': 'true', text: monogram });
+      if (tool.icon) loadSkillIcon(holder, tool.icon);
       const noun = count === 1 ? 'project' : 'projects';
       const chip = el(
         'button',
@@ -422,11 +426,16 @@ function renderSkills(site, projects, grid) {
             if (target) target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
           },
         },
-        holder,
+        el('span', { class: 'skill-chip__tile' }, holder),
         el('span', { class: 'skill-chip__text' }, el('span', { class: 'skill-chip__name', text: tool.name }), isTodo(tool.detail) ? null : el('span', { class: 'skill-chip__detail', text: tool.detail })),
-        el('span', { class: 'skill-chip__count', 'aria-hidden': 'true', text: String(count) }),
-        el('span', { class: 'sr-only', text: `, used in ${count} ${noun}. Show ${count === 1 ? 'it' : 'them'}.` })
+        el('span', { class: 'skill-chip__count', text: `${count} ${noun}` }),
+        el('span', { class: 'sr-only', text: `. Show ${count === 1 ? 'it' : 'them'}.` })
       );
+      // Brand colours come from site.json ("color" for the tile, "ink" for the logo or letters).
+      if (isHexColor(tool.color)) chip.style.setProperty('--brand', tool.color.trim());
+      if (isHexColor(tool.ink)) chip.style.setProperty('--brand-ink', tool.ink.trim());
+      chip.style.setProperty('--i', String(order));
+      order += 1;
       chips.set(tool.name, chip);
       list.append(el('li', null, chip));
     }
@@ -446,15 +455,16 @@ function renderSkills(site, projects, grid) {
     chips.forEach((chip, name) => chip.setAttribute('aria-pressed', String(event.detail.tool === name)));
   });
 
-  // Fetch the brand glyphs only when the section is about to be seen.
-  if (iconJobs.length && 'IntersectionObserver' in window) {
+  // The chips arrive one after another the first time the section comes into view.
+  if (!prefersReducedMotion() && 'IntersectionObserver' in window) {
+    host.classList.add('will-animate');
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
         observer.disconnect();
-        iconJobs.forEach((job) => job());
+        host.classList.add('is-in');
       },
-      { rootMargin: '300px 0px' }
+      { threshold: 0.2 }
     );
     observer.observe(host);
   }
@@ -619,11 +629,11 @@ function renderCertifications(site) {
   for (const item of items) {
     const details = safeUrl(item.url);
     const credential = safeUrl(item.credential_url);
-    const progress = safeUrl(item.progress_url, { httpsOnly: true });
+    const progress = !credential && item.progress && filled((item.progress.items || []).map((entry) => entry.title)).length ? item.progress : null;
     host.append(
       el(
         'article',
-        { class: 'cert reveal' },
+        { class: `cert reveal${progress ? ' cert--progress' : ''}` },
         el('div', { class: 'cert__top' }, el('span', { text: item.issuer || '' }), badge(item.status || 'Planned')),
         el('h3', { class: 'cert__name', text: item.name }),
         isTodo(item.note) ? null : el('p', { class: 'cert__note', text: item.note }),
@@ -632,12 +642,79 @@ function renderCertifications(site) {
           'div',
           { class: 'cert__links' },
           credential ? externalLink(credential, 'View credential', 'text-link', item.name) : null,
-          !credential && progress ? externalLink(progress, isTodo(item.progress_label) ? 'View training progress' : item.progress_label, 'text-link', item.name) : null,
           details ? externalLink(details, credential ? 'About this certification' : 'Exam details', 'text-link', item.name) : null
-        )
+        ),
+        progress ? certProgress(progress, item.name) : null
       )
     );
   }
+}
+
+/** One trophy or badge: Microsoft Learn image (with a check-mark fallback), title and date. */
+function achievement(entry, className) {
+  const date = parseYm(entry.date);
+  const src = safeUrl(entry.image, { httpsOnly: true }) || safeUrl(entry.image);
+  const art = el('span', { class: `${className}__art` });
+  if (src) {
+    const img = el('img', { src, alt: '', width: 96, height: 96, loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
+    img.addEventListener('error', () => art.replaceChildren(icon('check')), { once: true });
+    art.append(img);
+  } else {
+    art.append(icon('check'));
+  }
+  return el(
+    'li',
+    { class: className },
+    art,
+    el('span', { class: `${className}__name`, text: entry.title }),
+    date ? el('time', { class: `${className}__date`, datetime: entry.date, text: `${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}` }) : null
+  );
+}
+
+/** Training finished before an exam: stats, trophies, badges and a transcript request button. */
+function certProgress(progress, certName) {
+  const trophies = (progress.items || []).filter((entry) => !isTodo(entry.title));
+  const badges = (progress.badges || []).filter((entry) => !isTodo(entry.title));
+  const stats = (progress.stats || []).filter((stat) => !isTodo(stat.value) && !isTodo(stat.label));
+  const request = el(
+    'a',
+    { class: 'btn btn--primary btn--small', href: '#contact' },
+    icon('file'),
+    isTodo(progress.request_label) ? 'Request transcript' : progress.request_label
+  );
+  // Fill the contact form with a ready-made request, then move the visitor there.
+  request.addEventListener('click', () => {
+    const message = $('#cf-message');
+    if (message && !message.value.trim() && !isTodo(progress.request_message)) message.value = progress.request_message;
+    window.setTimeout(() => {
+      const name = $('#cf-name');
+      if (name) name.focus({ preventScroll: true });
+    }, prefersReducedMotion() ? 0 : 600);
+  });
+
+  let badgePanel = null;
+  if (badges.length) {
+    const grid = el('ul', { class: 'cert-badges__grid', 'aria-label': `Module badges for ${certName}` }, badges.map((entry) => achievement(entry, 'badge-card')));
+    [...grid.children].forEach((child, i) => child.style.setProperty('--i', String(i)));
+    badgePanel = el(
+      'details',
+      { class: 'cert-badges' },
+      el('summary', null, el('span', { text: `Show all ${badges.length} ${isTodo(progress.badges_label) ? 'module badges' : progress.badges_label.toLowerCase()}` }), icon('arrow-right')),
+      grid
+    );
+  }
+
+  return el(
+    'div',
+    { class: 'cert-progress' },
+    el('h4', { class: 'cert-progress__title', text: isTodo(progress.title) ? 'Training progress' : progress.title }),
+    isTodo(progress.summary) ? null : el('p', { class: 'cert-progress__summary', text: progress.summary }),
+    stats.length ? el('dl', { class: 'cert-progress__stats' }, stats.map((stat) => el('div', null, el('dt', { text: stat.label }), el('dd', { text: stat.value })))) : null,
+    trophies.length ? el('h5', { class: 'cert-progress__sub', text: isTodo(progress.items_label) ? 'Learning paths' : progress.items_label }) : null,
+    trophies.length ? el('ol', { class: 'trophy-grid', 'aria-label': `Learning paths completed for ${certName}` }, trophies.map((entry) => achievement(entry, 'trophy'))) : null,
+    badgePanel,
+    el('div', { class: 'cert-progress__foot' }, el('p', { text: 'My full Microsoft Learn transcript is available on request.' }), request)
+  );
 }
 
 /* Notes: a tiny, safe Markdown reader -------------------------------------- */

@@ -172,7 +172,7 @@ If the site shows "The site data could not be loaded", a comma or quote is almos
 | `stats` | The four counters under the hero |
 | `about` | About paragraphs, the three "What I bring" columns, "Currently learning" |
 | `recruiter` | The 30-second summary, top skills, work authorization |
-| `skills` | Tool chips, grouped by category |
+| `skills` | Tool chips, grouped by category. Each tool has a brand `color` for its tile and an `ink` colour for the logo or letters on it |
 | `role_labels` | Short role tags and the full job titles they stand for |
 | `process` | The six "How I work" steps |
 | `journey` | The timeline chart: semesters, courses, milestones |
@@ -466,7 +466,7 @@ project-name/
 | Changes do not appear on the live site | GitHub needs about a minute to rebuild. Then hard-refresh the page (Ctrl+Shift+R, or Cmd+Shift+R on a Mac). Check the **Actions** tab of the repository for a failed build. |
 | "That project isn't here" | The `id` in the address does not match any `id` in `projects.json`. |
 | A tool chip shows 0, or a filter is missing | The tool name in a project's `tools` list is spelled differently from the name in `site.json` → `skills`. They must match exactly. |
-| Charts or tool icons do not appear | They load from a public CDN (jsDelivr). Without an internet connection the cards fall back to the cover image and short text labels. |
+| Charts do not appear | Chart.js loads from a public CDN (jsDelivr). Without an internet connection the cards fall back to the cover image. |
 | The form says it is not connected | `site.formspree_id` is empty. See section 9. |
 | The site works at `/Portfolio/` but not at another address | The repository was renamed. The address always follows the repository name, including capital letters. |
 
@@ -476,5 +476,5 @@ project-name/
 
 - Fonts: [Plus Jakarta Sans](https://github.com/tokotype/PlusJakartaSans) and [Geist Mono](https://github.com/vercel/geist-font), both under the SIL Open Font License. The licence files are in `assets/fonts/`.
 - Charts: [Chart.js](https://www.chartjs.org/) (MIT licence), loaded from the jsDelivr CDN.
-- Tool glyphs: [Simple Icons](https://simpleicons.org/), loaded from the jsDelivr CDN. Brand marks belong to their owners.
+- Tool logos (Python, R): [Simple Icons](https://simpleicons.org/) (CC0), stored in `assets/img/icons/`. Tools without a Simple Icons logo show a letter tile in the brand colour. Brand names and colours belong to their owners.
 - Datasets belong to their publishers and are linked from each project page.

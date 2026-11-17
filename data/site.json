@@ -110,34 +110,34 @@
 
   "skills": {
     "note": "All at beginner level, learned through coursework and practice projects. Select a tool to see the projects that use it.",
-    "_help": "The name of each tool must match the names used in the \"tools\" list of each project in projects.json. \"icon\" is a Simple Icons slug (https://simpleicons.org); leave it empty to show the short monogram instead.",
+    "_help": "The name of each tool must match the names used in the \"tools\" list of each project in projects.json. \"icon\" is the name of a logo file in assets/img/icons (from https://simpleicons.org, without .svg); leave it empty to show the short monogram instead. \"color\" is the tile colour and \"ink\" is the logo or letter colour on it.",
     "groups": [
       {
         "name": "Analysis",
         "tools": [
-          { "name": "Excel", "monogram": "XL", "icon": "", "detail": "" },
-          { "name": "Python", "monogram": "Py", "icon": "python", "detail": "pandas, matplotlib" },
-          { "name": "R", "monogram": "R", "icon": "r", "detail": "" }
+          { "name": "Excel", "monogram": "X", "icon": "", "color": "#217346", "ink": "#ffffff", "detail": "" },
+          { "name": "Python", "monogram": "Py", "icon": "python", "color": "#3776AB", "ink": "#FFD43B", "detail": "pandas, matplotlib" },
+          { "name": "R", "monogram": "R", "icon": "r", "color": "#276DC3", "ink": "#ffffff", "detail": "" }
         ]
       },
       {
         "name": "Visualization",
         "tools": [
-          { "name": "Power BI", "monogram": "BI", "icon": "", "detail": "" },
-          { "name": "Tableau", "monogram": "Tb", "icon": "", "detail": "" }
+          { "name": "Power BI", "monogram": "BI", "icon": "", "color": "#F2C811", "ink": "#252423", "detail": "" },
+          { "name": "Tableau", "monogram": "Tb", "icon": "", "color": "#E97627", "ink": "#ffffff", "detail": "" }
         ]
       },
       {
         "name": "Data & Cloud",
         "tools": [
-          { "name": "MySQL", "monogram": "SQL", "icon": "", "detail": "" },
-          { "name": "AWS", "monogram": "AWS", "icon": "", "detail": "Cloud fundamentals" }
+          { "name": "MySQL", "monogram": "SQL", "icon": "", "color": "#00758F", "ink": "#ffffff", "detail": "" },
+          { "name": "AWS", "monogram": "aws", "icon": "", "color": "#232F3E", "ink": "#FF9900", "detail": "Cloud fundamentals" }
         ]
       },
       {
         "name": "Business & PM",
         "tools": [
-          { "name": "MS Project", "monogram": "MP", "icon": "", "detail": "" }
+          { "name": "MS Project", "monogram": "P", "icon": "", "color": "#31752F", "ink": "#ffffff", "detail": "" }
         ],
         "concepts": ["WBS", "Gantt charts", "Critical path", "KPIs", "Stakeholders", "Risk register"]
       }
@@ -217,18 +217,62 @@
   },
 
   "certifications": {
-    "_help": "Status can be Planned, In progress or Earned. When you earn one, change the status, add the date (for example 'March 2027') and paste your credential link into credential_url. Optional: add \"progress_url\" and \"progress_label\" to link proof of training before the exam (for example a Microsoft Learn transcript). Optional: add \"target\": \"2027-03\" to show a planned exam month on the journey chart.",
+    "_help": "Status can be Planned, In progress or Earned. When you earn one, change the status, add the date (for example 'March 2027') and paste your credential link into credential_url. Optional: add a \"progress\" block (see the PL-300 entry) to show training completed before the exam, with a button that asks visitors to request your transcript through the contact form. Optional: add \"target\": \"2027-03\" to show a planned exam month on the journey chart.",
     "items": [
       {
         "name": "Power BI Data Analyst Associate (PL-300)",
         "issuer": "Microsoft",
-        "note": "Finished all 7 Microsoft Learn learning paths for this exam (22 modules) in October 2026. Exam not yet taken.",
+        "note": "Exam preparation complete on Microsoft Learn. Exam not yet taken.",
         "status": "In progress",
         "date": "",
         "url": "https://learn.microsoft.com/en-us/credentials/certifications/power-bi-data-analyst-associate/",
-        "progress_url": "https://learn.microsoft.com/en-us/users/fathimamuflihakottaparamban-8185/transcript/d4mzpi1q5wyx8le",
-        "progress_label": "View training transcript",
-        "credential_url": ""
+        "credential_url": "",
+        "progress": {
+          "title": "Microsoft Learn progress",
+          "summary": "All 7 learning paths and 22 modules for this exam, finished between September and October 2026. Badge and trophy images are shown from Microsoft Learn.",
+          "stats": [
+            { "value": "7 / 7", "label": "Learning paths (trophies)" },
+            { "value": "22", "label": "Modules (badges)" },
+            { "value": "19 h 52 min", "label": "Training time" }
+          ],
+          "items_label": "Learning paths (trophies)",
+          "items": [
+            { "title": "Get started with Microsoft data analytics", "date": "2026-09-15", "image": "https://learn.microsoft.com/en-us/training/achievements/overview-data-analysis-power-bi.svg" },
+            { "title": "Prepare data for analysis with Power BI", "date": "2026-10-06", "image": "https://learn.microsoft.com/en-us/training/achievements/data-preparation-in-power-bi.svg" },
+            { "title": "Model data with Power BI", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/model-data-power-bi.svg" },
+            { "title": "Use DAX in semantic models", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/use-dax-power-bi-desktop.svg" },
+            { "title": "Prepare and visualize data with Microsoft Power BI", "date": "2026-10-11", "image": "https://learn.microsoft.com/en-us/training/achievements/generic-trophy.svg" },
+            { "title": "Design effective reports in Power BI", "date": "2026-10-13", "image": "https://learn.microsoft.com/en-us/training/achievements/power-bi-effective.svg" },
+            { "title": "Manage and secure Power BI", "date": "2026-10-14", "image": "https://learn.microsoft.com/en-us/training/achievements/deploy-and-maintain-data-in-power-bi.svg" }
+          ],
+          "badges_label": "Module badges",
+          "badges": [
+            { "title": "Explore the analytics process that turns data into insights", "date": "2026-09-15", "image": "https://learn.microsoft.com/en-us/training/achievements/data-analytics-and-microsoft.svg" },
+            { "title": "Get started building with Power BI", "date": "2026-09-15", "image": "https://learn.microsoft.com/en-us/training/achievements/get-started-power-bi.svg" },
+            { "title": "Introduction to end-to-end analytics using Microsoft Fabric", "date": "2026-09-15", "image": "https://learn.microsoft.com/en-us/training/achievements/introduction-end-analytics-use-microsoft-fabric.svg" },
+            { "title": "Get started with Copilot in Power BI", "date": "2026-09-15", "image": "https://learn.microsoft.com/en-us/training/achievements/power-bi-module.svg" },
+            { "title": "Get data in Power BI", "date": "2026-09-23", "image": "https://learn.microsoft.com/en-us/training/achievements/get-data.svg" },
+            { "title": "Clean, transform, and load data in Power BI", "date": "2026-09-30", "image": "https://learn.microsoft.com/en-us/training/achievements/clean-transform-and-load-data-in-power-bi.svg" },
+            { "title": "Choose a Power BI model framework", "date": "2026-10-06", "image": "https://learn.microsoft.com/en-us/training/achievements/choose-power-bi-model-framework.svg" },
+            { "title": "Configure a semantic model", "date": "2026-10-07", "image": "https://learn.microsoft.com/en-us/training/achievements/generic-badge.svg" },
+            { "title": "Write DAX formulas for semantic models", "date": "2026-10-08", "image": "https://learn.microsoft.com/en-us/training/achievements/dax-power-bi-write-formulas.svg" },
+            { "title": "Create DAX calculations in semantic models", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/add-measures-power-bi-desktop.svg" },
+            { "title": "Modify DAX filter context in semantic models", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/modify-dax-filter-context-power-bi-desktop.svg" },
+            { "title": "Use DAX time intelligence functions in semantic models", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/use-dax-power-bi-desktop.svg" },
+            { "title": "Create visual calculations in Power BI Desktop", "date": "2026-10-10", "image": "https://learn.microsoft.com/en-us/training/achievements/generic-badge.svg" },
+            { "title": "Scope report design requirements", "date": "2026-10-11", "image": "https://learn.microsoft.com/en-us/training/achievements/power-bi-effective-requirements.svg" },
+            { "title": "Design Power BI reports", "date": "2026-10-11", "image": "https://learn.microsoft.com/en-us/training/achievements/power-bi-effective-reports.svg" },
+            { "title": "Enhance Power BI report designs for the user experience", "date": "2026-10-12", "image": "https://learn.microsoft.com/en-us/training/achievements/power-bi-effective-user-experience.svg" },
+            { "title": "Perform analytics in Power BI", "date": "2026-10-13", "image": "https://learn.microsoft.com/en-us/training/achievements/perform-analytics-power-bi.svg" },
+            { "title": "Manage workspaces in Power BI service", "date": "2026-10-13", "image": "https://learn.microsoft.com/en-us/training/achievements/create-manage-workspaces-power-bi.svg" },
+            { "title": "Manage semantic models in Power BI", "date": "2026-10-13", "image": "https://learn.microsoft.com/en-us/training/achievements/manage-datasets-in-power-bi.svg" },
+            { "title": "Choose a content distribution method", "date": "2026-10-13", "image": "https://learn.microsoft.com/en-us/training/achievements/create-manage-workspaces-power-bi.svg" },
+            { "title": "Create dashboards in Power BI", "date": "2026-10-14", "image": "https://learn.microsoft.com/en-us/training/achievements/create-dashboards-power-bi.svg" },
+            { "title": "Secure data access in Power BI", "date": "2026-10-14", "image": "https://learn.microsoft.com/en-us/training/achievements/row-level-security-power-bi.svg" }
+          ],
+          "request_label": "Request my Microsoft Learn transcript",
+          "request_message": "Hi Fathima, could you please send me your Microsoft Learn transcript for the PL-300 learning paths?"
+        }
       },
       {
         "name": "Tableau Desktop Foundations",
