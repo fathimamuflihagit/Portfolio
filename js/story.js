@@ -44,6 +44,9 @@ const GLYPHS = {
   lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   maple: '<path d="M12 2l1.6 3.6 2.2-1.1-.6 4.4 3.3-2.2-.5 2.3 2.5.6-2.2 2.6 1 1.6-4.6.4.4 3.1L12 15.6 8.9 17.3l.4-3.1-4.6-.4 1-1.6L3.5 9.6 6 9l-.5-2.3 3.3 2.2-.6-4.4 2.2 1.1z"/><path d="M12 15.6V22"/>',
   dollar: '<path d="M12 3v18M16.5 7.5C16 6 14.3 5 12 5c-2.8 0-4.5 1.4-4.5 3.3 0 4.4 9 2.6 9 7 0 2-1.8 3.4-4.5 3.4-2.4 0-4.2-1.1-4.7-2.8"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/>',
+  growth: '<path d="M4 20h16M6 16l4-5 3 3 5-7M15 7h3v3"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   cross: '<path d="M6 6l12 12M18 6L6 18"/>',
@@ -523,7 +526,143 @@ function evidenceBlock(block) {
   );
 }
 
-const RENDERERS = { chapter: chapterBlock, flow: flowBlock, decisions: decisionsBlock, budget: budgetBlock, matrix: matrixBlock, split: splitBlock, checklist: checklistBlock, evidence: evidenceBlock };
+/** Big-number cards, for example SMART objectives. */
+function cardsBlock(block) {
+  return el(
+    'section',
+    { class: 'scards', 'aria-label': block.title || 'Highlights' },
+    el('h3', { class: 'story-title', text: block.title }),
+    say(block.intro, 'p', 'story-lead'),
+    el(
+      'ol',
+      { class: 'scards__list' },
+      (block.items || []).map((item, i) => {
+        const node = el(
+          'li',
+          { class: 'scard reveal' },
+          el('span', { class: 'scard__icon' }, glyph(item.icon || 'check')),
+          el('p', { class: 'scard__value', text: item.value }),
+          el('h4', { class: 'scard__title', text: item.title }),
+          say(item.text, 'p', 'scard__text')
+        );
+        node.style.setProperty('--reveal-delay', `${i * 0.08}s`);
+        return node;
+      })
+    ),
+    say(block.note, 'p', 'story-note')
+  );
+}
+
+/** A work breakdown structure: root, then one coloured branch per deliverable. */
+function treeBlock(block) {
+  const root = block.root || {};
+  const branch = (node, i) => {
+    const card = el(
+      'li',
+      { class: 'wbs__branch reveal' },
+      el('p', { class: 'wbs__l2' }, el('span', { class: 'wbs__code', text: node.code }), node.name),
+      el(
+        'ul',
+        { class: 'wbs__l3s' },
+        (node.children || []).map((l3) =>
+          el(
+            'li',
+            { class: 'wbs__l3' },
+            el('p', { class: 'wbs__l3-name' }, el('span', { class: 'wbs__code', text: l3.code }), l3.name),
+            (l3.children || []).length
+              ? el('ul', { class: 'wbs__l4s' }, l3.children.map((l4) => el('li', { class: 'wbs__l4' }, el('span', { class: 'wbs__code', text: l4.code }), l4.name)))
+              : null
+          )
+        )
+      )
+    );
+    card.style.setProperty('--hue', `var(--wbs-${(i % 6) + 1})`);
+    card.style.setProperty('--reveal-delay', `${(i % 3) * 0.08}s`);
+    return card;
+  };
+  return el(
+    'section',
+    { class: 'wbs', 'aria-label': block.title || 'Work breakdown structure' },
+    el('h3', { class: 'story-title', text: block.title }),
+    say(block.intro, 'p', 'story-lead'),
+    el('p', { class: 'wbs__root' }, el('span', { class: 'wbs__code', text: root.code || '1.0' }), root.name || ''),
+    el('ol', { class: 'wbs__branches' }, (block.branches || []).map(branch)),
+    Array.isArray(block.legend)
+      ? el('ul', { class: 'wbs__legend', 'aria-label': 'WBS levels' }, block.legend.map((item, i) => el('li', { class: `wbs__legend-item is-l${i + 2}` }, el('b', { text: item.level }), ` ${item.name}`)))
+      : null,
+    say(block.note, 'p', 'story-note')
+  );
+}
+
+/** Balanced scorecard: the vision in the middle, four perspectives around it. */
+function scorecardBlock(block) {
+  const slots = ['top', 'left', 'right', 'bottom'];
+  const perspective = (p, i) =>
+    el(
+      'article',
+      { class: `bsc__card bsc__card--${slots[i] || 'bottom'} reveal` },
+      el('header', { class: 'bsc__head' }, glyph(p.icon || 'chart', 'story-icon'), el('div', null, el('h4', { class: 'bsc__name', text: p.name }), say(p.aim, 'p', 'bsc__aim'))),
+      el(
+        'dl',
+        { class: 'bsc__rows' },
+        (p.rows || []).map((row) =>
+          el('div', { class: 'bsc__row' }, el('dt', { class: 'bsc__objective', text: row.objective }), el('dd', { class: 'bsc__kpi', text: row.kpi }), el('dd', { class: 'bsc__target', text: row.target }))
+        )
+      )
+    );
+  const perspectives = block.perspectives || [];
+  return el(
+    'section',
+    { class: 'bsc', 'aria-label': block.title || 'Balanced scorecard' },
+    el('h3', { class: 'story-title', text: block.title }),
+    say(block.intro, 'p', 'story-lead'),
+    el(
+      'div',
+      { class: 'bsc__grid' },
+      el('div', { class: 'bsc__vision' }, el('p', { class: 'bsc__vision-label', text: 'Vision' }), say(block.vision, 'p', 'bsc__vision-text')),
+      perspectives.map(perspective)
+    ),
+    say(block.note, 'p', 'story-note')
+  );
+}
+
+/** Where a project stands: milestones that are done, current or next. */
+function progressBlock(block) {
+  const items = block.items || [];
+  const done = items.filter((item) => item.status === 'done').length;
+  const share = items.length ? Math.round(((done + (items.some((item) => item.status === 'current') ? 0.5 : 0)) / items.length) * 100) : 0;
+  const label = { done: 'Done', current: 'In progress', next: 'Coming up' };
+  const wrap = el(
+    'section',
+    { class: 'roadmap', 'aria-label': block.title || 'Progress' },
+    el('h3', { class: 'story-title', text: block.title }),
+    say(block.intro, 'p', 'story-lead'),
+    el(
+      'ol',
+      { class: 'roadmap__list' },
+      items.map((item) =>
+        el(
+          'li',
+          { class: `roadmap__item is-${item.status || 'next'}` },
+          el('span', { class: 'roadmap__dot', 'aria-hidden': 'true' }, item.status === 'done' ? glyph('check', 'story-icon story-icon--sm') : null),
+          el(
+            'div',
+            { class: 'roadmap__body' },
+            el('p', { class: 'roadmap__meta' }, el('span', { class: 'roadmap__status', text: label[item.status] || label.next }), isTodo(item.date) ? null : el('span', { text: item.date })),
+            el('h4', { class: 'roadmap__title', text: item.title }),
+            say(item.text, 'p', 'roadmap__text'),
+            Array.isArray(item.chips) && item.chips.length ? el('ul', { class: 'roadmap__chips' }, item.chips.map((chip) => el('li', { text: chip }))) : null
+          )
+        )
+      )
+    )
+  );
+  wrap.style.setProperty('--roadmap-fill', String(share / 100));
+  onFirstView(wrap, () => wrap.classList.add('is-in'), 0.2);
+  return wrap;
+}
+
+const RENDERERS = { chapter: chapterBlock, flow: flowBlock, decisions: decisionsBlock, budget: budgetBlock, matrix: matrixBlock, split: splitBlock, checklist: checklistBlock, evidence: evidenceBlock, cards: cardsBlock, tree: treeBlock, scorecard: scorecardBlock, progress: progressBlock };
 
 /** Builds the whole story, with the plain / technical switch at the top. */
 export function renderStory(story) {

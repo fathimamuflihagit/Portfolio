@@ -505,7 +505,11 @@ Text is normally one string. Optionally, any text can have two versions, `{ "pla
 | `split` | Two side-by-side columns | `columns` (two of `label`, `title`, `items`) |
 | `checklist` | Requirements, each ticked with how it was met | `items` (`need`, `how`) |
 | `evidence` | Original images that open full size | `items` (`image`, `alt`, `caption`, `wide`) |
+| `cards` | Big-number cards, for example SMART objectives | `items` (`icon`, `value`, `title`, `text`) |
+| `tree` | A work breakdown structure | `root` (`code`, `name`), `branches` (`code`, `name`, `children`, each with their own `children`), optional `legend` |
+| `scorecard` | A balanced scorecard: vision in the middle, four perspectives around it | `vision`, `perspectives` (`name`, `icon`, `aim`, `rows`: `objective`, `kpi`, `target`) |
+| `progress` | Where a project stands, as a timeline | `items` (`status`: `done`, `current` or `next`; `date`, `title`, `text`, `chips`) |
 
-Icons available for `icon` fields (including `region.icon` on a flow): store, file, upload, bucket, gear, catalog, search, chart, people, shield, key, log, lock, maple, dollar, clock, check, layers, model, formula.
+Icons available for `icon` fields (including `region.icon` on a flow): store, file, upload, bucket, gear, catalog, search, chart, people, shield, key, log, lock, maple, dollar, clock, check, layers, model, formula, target, bell, growth.
 
 Only put numbers in a story that come from your own work, and label estimates as estimates.
