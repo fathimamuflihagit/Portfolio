@@ -23,7 +23,7 @@
 
   "links": {
     "_email_help": "Add your email to show the email row and the copy button. Leave empty to hide them.",
-    "email": "",
+    "email": "muflihaishaqkp@gmail.com",
     "linkedin": "https://www.linkedin.com/in/fathima-mufliha-2612a218a",
     "github": "https://github.com/fathimamuflihagit",
     "tableau_public": ""
@@ -105,7 +105,7 @@
   "recruiter": {
     "summary": "Graduate certificate student in Applied Data Analytics and Visualization at Sheridan College, expected to finish in April 2027 and looking for a co-op or internship from May 2027. Beginner-level, hands-on experience with Excel, SQL, Python, R, Power BI and Tableau, shown through portfolio projects on public datasets across BI, marketing, finance and operations.",
     "top_skills": ["Excel", "SQL (MySQL)", "Python", "R", "Power BI", "Tableau"],
-    "work_authorization": "TODO: add one line about your work authorization in Canada."
+    "work_authorization": "Permanent Resident in Canada."
   },
 
   "skills": {
